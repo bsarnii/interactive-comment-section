@@ -1,0 +1,50 @@
+@import "../index.scss";
+.comment{
+    padding: 1rem;
+    display: flex;
+    background-color: white;
+    align-items: flex-start;
+    margin: 1rem;
+    border-radius: 1rem;
+    form{
+        display: flex;
+        width:100%;
+        justify-content: center;
+        align-items: flex-start;
+        gap: 1rem;
+        img{
+            height: 2.5rem;
+            width: 2.5rem;
+            border-radius: 50%;
+        }
+        textarea{
+            width:100%;
+            height:6rem;
+            border-radius: 0.5rem;
+            border: 1px solid $lightgray;
+            resize: none;
+            padding: 1rem;
+            font-size: 16px;
+            font-family: 'Rubik', sans-serif;
+            color: $darkblue;
+            caret-color: $primary-blue;
+            &:focus{
+                outline: $primary-blue solid 1px;
+            }
+        }
+        button{
+            padding: 0.8rem 1.6rem;
+            background-color: $primary-blue;
+            border-radius: 0.5rem;
+            color: $verylightgray;
+            border: none;
+            font-weight: 500;
+            font-family: 'Rubik', sans-serif;
+            font-size: 16px;
+            cursor: pointer;
+            &:hover{
+                opacity: 0.7;
+            }
+        }
+    }
+}
