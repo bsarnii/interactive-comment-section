@@ -5,12 +5,12 @@ import { ReactComponent as MinusIcon } from "../assets/icon-minus.svg"
 import { ReactComponent as ReplyIcon } from "../assets/icon-reply.svg"
 import { ReactComponent as EditIcon } from "../assets/icon-edit.svg"
 import { ReactComponent as DeleteIcon } from "../assets/icon-delete.svg"
-import ReplyComment from "../replyComment/replyComment"
+import ReplyComment from "../replyComment/ReplyComment"
 import { useState } from "react"
 
 type Props = {
   count: any
-  key: any,
+  id: string,
   content: any,
   img:any,
   createdAt:any,
@@ -18,15 +18,14 @@ type Props = {
   replies: any
 }
 
-const Post = ({count, key, content, createdAt, username, img, replies}:Props) => {
+const Post = ({count, id, content, createdAt, username, img, replies}:Props) => {
  const [replyComment, setReplyComment] = useState(false)
-
 
   let renderReply = replies.map((reply:any)=>{
     return <Reply replyProps={reply}/>})
   return (
     <>
-    <article className="post" key={key}>
+    <article className="post" key={id}>
         <div className="post__left">
           <div className="plus"><PlusIcon/></div>
           <p className="score">{count}</p>
@@ -63,7 +62,7 @@ const Post = ({count, key, content, createdAt, username, img, replies}:Props) =>
     </article>
     <div className="replies">
      {renderReply}
-     {replyComment === true ? <ReplyComment/> : ""}
+     {replyComment === true ? <ReplyComment id={id}/> : ""}
     </div>
     </>
   )

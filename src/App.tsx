@@ -22,7 +22,7 @@ function App() {
   const [data, setData] = useState([{
     content: "",
     createdAt: "",
-    id: "0",
+    id: "",
     img: "",
     score: 0,
     username: "",
@@ -49,7 +49,7 @@ function App() {
   const posts = data.map( post => {
     return <Post
     content={post.content} createdAt={post.createdAt}
-     count={post.score} key={post.id}
+     count={post.score} id={post.id}
      img={post.img} username={post.username}
      replies={post.replies}
      />

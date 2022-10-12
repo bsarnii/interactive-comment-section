@@ -1,22 +1,26 @@
 import "./ReplyComment.scss"
 import { useState } from "react"
-import { colRef } from "../firebase"
-import { addDoc } from "firebase/firestore"
+import { db } from "../firebase"
+import { doc, updateDoc, arrayUnion } from "firebase/firestore"
 
-const ReplyComment = () => {
+type Props = {
+  id:string
+}
+
+const ReplyComment = ({id}:Props) => {
   const [comment, setComment] = useState("");
-
-  const sendPost = (e: { preventDefault: () => void }) => {
+  console.log(id)
+  const addReply = (e: { preventDefault: () => void }) => {
         e.preventDefault();
-        console.log(comment);
-        addDoc((colRef), {
-          content: comment,
-          createdAt: "1 minute ago",
-          img: "../src/assets/avatars/image-juliusomo.png",
-          score: 1,
-          username: "juliusomo",
-          id: "3",
-          replies: []
+        const docRef= doc(db, "post", "3Mlc1ozg5usQOE0bHyPL");
+        updateDoc((docRef), {
+          replies:arrayUnion({
+            content: comment,
+            createdAt: "1 minute ago",
+            img: "../src/assets/avatars/image-juliusomo.png",
+            score: 1,
+            username: "juliusomo"
+          })
         })
         setComment("");
         
@@ -32,7 +36,7 @@ const ReplyComment = () => {
         onChange={(e)=> setComment(e.target.value)}
         >
         </textarea>
-        <button type="submit" onClick={sendPost}>Reply</button>
+        <button type="submit" onClick={addReply}>Reply</button>
       </form>
     </section>
   )
