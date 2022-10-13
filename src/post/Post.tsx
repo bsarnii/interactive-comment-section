@@ -16,9 +16,10 @@ type Props = {
   createdAt:any,
   username:any
   replies: any
+  setNewReplyComment:any
 }
 
-const Post = ({count, id, content, createdAt, username, img, replies}:Props) => {
+const Post = ({count, id, content, createdAt, username, img, replies, setNewReplyComment}:Props) => {
  const [replyComment, setReplyComment] = useState(false)
 
   let renderReply = replies.map((reply:any)=>{
@@ -62,7 +63,7 @@ const Post = ({count, id, content, createdAt, username, img, replies}:Props) => 
     </article>
     <div className="replies">
      {renderReply}
-     {replyComment === true ? <ReplyComment id={id}/> : ""}
+     {replyComment === true ? <ReplyComment id={id} setNewReplyComment={setNewReplyComment} setReplyComment={setReplyComment}/> : ""}
     </div>
     </>
   )

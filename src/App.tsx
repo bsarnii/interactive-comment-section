@@ -30,7 +30,8 @@ function App() {
   }
 ]);
         //Getting props from child//
-  const [newComment, setNewComment] = useState("");
+  const [newComment, setNewComment] = useState(null);
+  const [newReplyComment, setNewReplyComment] = useState("");
   
   useEffect(()=>{
      const fetchData = async () => {
@@ -41,17 +42,17 @@ function App() {
           posts.push({ ...doc.data(), id: doc.id })
         })
         setData(posts)
-        console.log(posts)
+        console.log(newReplyComment)
     })
     }
     fetchData()
-  },[newComment])
+  },[newComment, newReplyComment])
   const posts = data.map( post => {
     return <Post
     content={post.content} createdAt={post.createdAt}
      count={post.score} id={post.id}
      img={post.img} username={post.username}
-     replies={post.replies}
+     replies={post.replies} setNewReplyComment={setNewReplyComment}
      />
   })
   return (

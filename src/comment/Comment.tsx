@@ -18,7 +18,7 @@ const Comment = ({setNewComment}:any) => {
       id: "3",
       replies: []
     })
-    setNewComment(comment)
+    setNewComment(Math.random()*10)
     setComment("");
     
   }

@@ -4,24 +4,28 @@ import { db } from "../firebase"
 import { doc, updateDoc, arrayUnion } from "firebase/firestore"
 
 type Props = {
-  id:string
+  id:string,
+  setNewReplyComment:any,
+  setReplyComment: any
 }
-
-const ReplyComment = ({id}:Props) => {
+const ReplyComment = ({id, setNewReplyComment, setReplyComment}:Props) => {
   const [comment, setComment] = useState("");
-  console.log(id)
   const addReply = (e: { preventDefault: () => void }) => {
         e.preventDefault();
-        const docRef= doc(db, "post", "3Mlc1ozg5usQOE0bHyPL");
+        const docRef= doc(db, "post", id);
+        const replyId= Math.random()*10
         updateDoc((docRef), {
           replies:arrayUnion({
             content: comment,
             createdAt: "1 minute ago",
             img: "../src/assets/avatars/image-juliusomo.png",
             score: 1,
-            username: "juliusomo"
+            username: "juliusomo",
+            id: replyId
           })
         })
+        setNewReplyComment(replyId)
+        setReplyComment(false)
         setComment("");
         
       }
