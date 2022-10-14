@@ -7,6 +7,8 @@ import { ReactComponent as EditIcon } from "../assets/icon-edit.svg"
 import { ReactComponent as DeleteIcon } from "../assets/icon-delete.svg"
 import ReplyComment from "../replyComment/ReplyComment"
 import { useState } from "react"
+import {db} from "../firebase"
+import { doc, deleteDoc } from "firebase/firestore"
 
 type Props = {
   count: any
@@ -17,13 +19,22 @@ type Props = {
   username:any
   replies: any
   setNewReplyComment:any
+  setDeleteComment:any
+  setDeleteReply:any
 }
 
-const Post = ({count, id, content, createdAt, username, img, replies, setNewReplyComment}:Props) => {
+const Post = ({count, id, content, createdAt, username, img, replies, setNewReplyComment, setDeleteComment, setDeleteReply}:Props) => {
  const [replyComment, setReplyComment] = useState(false)
 
+ const deletePost = () => {
+  console.log(`post deleted with ${id}`)
+  const docRef=doc(db,"post",id)
+  deleteDoc(docRef)
+  setDeleteComment(`post deleted with ${id}`)
+ }
+
   let renderReply = replies.map((reply:any)=>{
-    return <Reply replyProps={reply}/>})
+    return <Reply replyProps={reply} postId={id} setReplyComment={setReplyComment} setDeleteReply={setDeleteReply}/>})
   return (
     <>
     <article className="post" key={id}>
@@ -46,7 +57,7 @@ const Post = ({count, id, content, createdAt, username, img, replies, setNewRepl
             </div>
             :
             <div className="delete__edit__container">
-              <div className="delete__container">
+              <div onClick={deletePost} className="delete__container">
                 <DeleteIcon/>
                 <span>Delete</span>
               </div>

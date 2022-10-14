@@ -4,9 +4,27 @@ import { ReactComponent as MinusIcon } from "../assets/icon-minus.svg"
 import { ReactComponent as ReplyIcon } from "../assets/icon-reply.svg"
 import { ReactComponent as EditIcon } from "../assets/icon-edit.svg"
 import { ReactComponent as DeleteIcon } from "../assets/icon-delete.svg"
+import {db} from "../firebase"
+import { doc, updateDoc, arrayRemove } from "firebase/firestore"
 
 
-const Reply = ({replyProps}:any) => {
+const Reply = ({replyProps, setReplyComment, postId, setDeleteReply}:any) => {
+
+  const deleteReplyComment = () => {
+    console.log(`ReplyComment with id:${replyProps.id} deleted`)
+    const docRef=doc(db,"post",postId)
+    updateDoc(docRef,{
+      replies:arrayRemove({
+        content: replyProps.content,
+        createdAt: replyProps.createdAt,
+        id: replyProps.id,
+        img: replyProps.img,
+        score: replyProps.score,
+        username: replyProps.username
+      })
+    })
+    setDeleteReply(`ReplyComment with id:${replyProps.id} deleted`)
+  }
 
   return (
     <article className="reply">
@@ -23,13 +41,13 @@ const Reply = ({replyProps}:any) => {
               <div className="time">{replyProps.createdAt}</div>
             </div>
             {replyProps.username != "juliusomo" ?
-            <div className="reply__container">
+            <div onClick={() => setReplyComment(true)} className="reply__container">
               <ReplyIcon/>
               <span>Reply</span>
             </div>
             :
             <div className="delete__edit__container">
-              <div className="delete__container">
+              <div onClick={deleteReplyComment} className="delete__container">
                 <DeleteIcon/>
                 <span>Delete</span>
               </div>
