@@ -9,6 +9,7 @@ import ReplyComment from "../replyComment/ReplyComment"
 import { useState } from "react"
 import {db} from "../firebase"
 import { doc, deleteDoc } from "firebase/firestore"
+import PostPopup from "../postPopup/PostPopup"
 
 type Props = {
   count: any
