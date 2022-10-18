@@ -52,7 +52,7 @@ function App() {
     })
     }
     fetchData()
-  },[newComment, newReplyComment, deleteComment, deleteReply,showPopup])
+  },[newComment, newReplyComment, deleteComment, deleteReply,showPopup, showReplyPopup])
   const posts = data.map( post => {
     return <Post
     content={post.content} createdAt={post.createdAt}
@@ -84,7 +84,7 @@ function App() {
       <Comment setNewComment={setNewComment} />
     </main>
     {showPopup ? <PostPopup setShowPopup={setShowPopup} deleteComment={deleteComment}/> : ""}
-    {showReplyPopup ? <ReplyPopup setShowReplyPopup={setShowReplyPopup}/> : ""}
+    {showReplyPopup ? <ReplyPopup setShowReplyPopup={setShowReplyPopup} deleteReply={deleteReply}/> : ""}
     </>
   )
 }

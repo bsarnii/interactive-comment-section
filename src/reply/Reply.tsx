@@ -11,19 +11,18 @@ import { doc, updateDoc, arrayRemove } from "firebase/firestore"
 const Reply = ({replyProps, setReplyComment, postId, setDeleteReply, setShowReplyPopup}:any) => {
 
   const deleteReplyComment = () => {
-    console.log(`ReplyComment with id:${replyProps.id} deleted`)
-    const docRef=doc(db,"post",postId)
-    updateDoc(docRef,{
-      replies:arrayRemove({
+    setShowReplyPopup(true)
+    setDeleteReply({
+      postId:postId,
+      replies:{
         content: replyProps.content,
         createdAt: replyProps.createdAt,
         id: replyProps.id,
         img: replyProps.img,
         score: replyProps.score,
         username: replyProps.username
-      })
+      }
     })
-    setDeleteReply(`ReplyComment with id:${replyProps.id} deleted`)
   }
 
   return (
@@ -47,7 +46,7 @@ const Reply = ({replyProps, setReplyComment, postId, setDeleteReply, setShowRepl
             </div>
             :
             <div className="delete__edit__container">
-              <div onClick={()=>setShowReplyPopup(true)} className="delete__container">
+              <div onClick={deleteReplyComment} className="delete__container">
                 <DeleteIcon/>
                 <span>Delete</span>
               </div>

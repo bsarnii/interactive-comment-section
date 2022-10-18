@@ -1,6 +1,24 @@
 import "./ReplyPopup.scss";
+import {db} from "../firebase"
+import { doc, updateDoc, arrayRemove } from "firebase/firestore"
 
-const ReplyPopup = ({setShowReplyPopup}:any) => {
+const ReplyPopup = ({setShowReplyPopup,deleteReply}:any) => {
+
+  const deleteConfirm = () => {
+    const docRef=doc(db,"post",deleteReply.postId)
+    updateDoc(docRef,{
+      replies:arrayRemove({
+        content: deleteReply.replies.content,
+        createdAt: deleteReply.replies.createdAt,
+        id: deleteReply.replies.id,
+        img: deleteReply.replies.img,
+        score: deleteReply.replies.score,
+        username: deleteReply.replies.username
+      })
+    })
+  setShowReplyPopup(false)
+  }
+
   return (
     <div className='replyPopup'>
         <div className="popup__inner">
@@ -8,7 +26,7 @@ const ReplyPopup = ({setShowReplyPopup}:any) => {
             <p>Are you sure you want to delete this comment? This will remove the comment and can't be undone.</p>
             <div className="button__container">
                 <button onClick={()=> setShowReplyPopup(false)} className="btn__cancel">NO, CANCEL</button>
-                <button onClick={()=> setShowReplyPopup(false)} className="btn__confirm">YES, DELETE</button>
+                <button onClick={deleteConfirm} className="btn__confirm">YES, DELETE</button>
             </div>
       </div>
     </div>
