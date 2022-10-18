@@ -8,7 +8,7 @@ import {db} from "../firebase"
 import { doc, updateDoc, arrayRemove } from "firebase/firestore"
 
 
-const Reply = ({replyProps, setReplyComment, postId, setDeleteReply}:any) => {
+const Reply = ({replyProps, setReplyComment, postId, setDeleteReply, setShowReplyPopup}:any) => {
 
   const deleteReplyComment = () => {
     console.log(`ReplyComment with id:${replyProps.id} deleted`)
@@ -47,7 +47,7 @@ const Reply = ({replyProps, setReplyComment, postId, setDeleteReply}:any) => {
             </div>
             :
             <div className="delete__edit__container">
-              <div onClick={deleteReplyComment} className="delete__container">
+              <div onClick={()=>setShowReplyPopup(true)} className="delete__container">
                 <DeleteIcon/>
                 <span>Delete</span>
               </div>

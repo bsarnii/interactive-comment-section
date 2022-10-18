@@ -6,6 +6,8 @@ import { getDocs
 } from "firebase/firestore"
 import { colRef } from "./firebase"
 import { useEffect, useState } from 'react'
+import PostPopup from "./postPopup/PostPopup"
+import ReplyPopup from './replyPopup/ReplyPopup'
 
 type data = {
   content:string,
@@ -34,6 +36,8 @@ function App() {
   const [newReplyComment, setNewReplyComment] = useState("");
   const [deleteComment, setDeleteComment] = useState("");
   const [deleteReply, setDeleteReply] = useState("");
+  const [showPopup, setShowPopup] = useState(false);
+  const [showReplyPopup, setShowReplyPopup] = useState(false);
   
   useEffect(()=>{
      const fetchData = async () => {
@@ -48,7 +52,7 @@ function App() {
     })
     }
     fetchData()
-  },[newComment, newReplyComment, deleteComment, deleteReply])
+  },[newComment, newReplyComment, deleteComment, deleteReply,showPopup])
   const posts = data.map( post => {
     return <Post
     content={post.content} createdAt={post.createdAt}
@@ -56,9 +60,11 @@ function App() {
      img={post.img} username={post.username}
      replies={post.replies} setNewReplyComment={setNewReplyComment}
      setDeleteComment={setDeleteComment} setDeleteReply={setDeleteReply}
+     setShowPopup={setShowPopup} setShowReplyPopup={setShowReplyPopup}
      />
   })
   return (
+    <>
     <main className='container'>
       <section className='posts'>
         {data.length > 1 ? 
@@ -77,7 +83,9 @@ function App() {
       </section>
       <Comment setNewComment={setNewComment} />
     </main>
-    
+    {showPopup ? <PostPopup setShowPopup={setShowPopup} deleteComment={deleteComment}/> : ""}
+    {showReplyPopup ? <ReplyPopup setShowReplyPopup={setShowReplyPopup}/> : ""}
+    </>
   )
 }
 

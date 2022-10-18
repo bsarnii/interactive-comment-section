@@ -9,7 +9,6 @@ import ReplyComment from "../replyComment/ReplyComment"
 import { useState } from "react"
 import {db} from "../firebase"
 import { doc, deleteDoc } from "firebase/firestore"
-import PostPopup from "../postPopup/PostPopup"
 
 type Props = {
   count: any
@@ -22,20 +21,20 @@ type Props = {
   setNewReplyComment:any
   setDeleteComment:any
   setDeleteReply:any
+  setShowPopup:any
+  setShowReplyPopup:any
 }
 
-const Post = ({count, id, content, createdAt, username, img, replies, setNewReplyComment, setDeleteComment, setDeleteReply}:Props) => {
+const Post = ({count, id, content, createdAt, username, img, replies, setNewReplyComment, setDeleteComment, setDeleteReply, setShowPopup, setShowReplyPopup}:Props) => {
  const [replyComment, setReplyComment] = useState(false)
 
- const deletePost = () => {
-  console.log(`post deleted with ${id}`)
-  const docRef=doc(db,"post",id)
-  deleteDoc(docRef)
-  setDeleteComment(`post deleted with ${id}`)
+ const deletePostRequest = () => {
+  setShowPopup(true)
+  setDeleteComment(id)
  }
 
   let renderReply = replies.map((reply:any)=>{
-    return <Reply replyProps={reply} postId={id} setReplyComment={setReplyComment} setDeleteReply={setDeleteReply}/>})
+    return <Reply replyProps={reply} postId={id} setReplyComment={setReplyComment} setDeleteReply={setDeleteReply} setShowReplyPopup={setShowReplyPopup}/>})
   return (
     <>
     <article className="post" key={id}>
@@ -58,7 +57,7 @@ const Post = ({count, id, content, createdAt, username, img, replies, setNewRepl
             </div>
             :
             <div className="delete__edit__container">
-              <div onClick={deletePost} className="delete__container">
+              <div onClick={deletePostRequest} className="delete__container">
                 <DeleteIcon/>
                 <span>Delete</span>
               </div>
