@@ -8,7 +8,7 @@ import { ReactComponent as DeleteIcon } from "../assets/icon-delete.svg"
 import ReplyComment from "../replyComment/ReplyComment"
 import { useState } from "react"
 import {db} from "../firebase"
-import { doc, deleteDoc } from "firebase/firestore"
+import { doc, updateDoc } from "firebase/firestore"
 
 type Props = {
   count: any
@@ -23,10 +23,36 @@ type Props = {
   setDeleteReply:any
   setShowPopup:any
   setShowReplyPopup:any
+  setRenderUpdatePost: any
 }
 
-const Post = ({count, id, content, createdAt, username, img, replies, setNewReplyComment, setDeleteComment, setDeleteReply, setShowPopup, setShowReplyPopup}:Props) => {
+const Post = ({count, id, content, createdAt, username, img, replies, setNewReplyComment, setDeleteComment, setDeleteReply, setShowPopup, setShowReplyPopup, setRenderUpdatePost}:Props) => {
  const [replyComment, setReplyComment] = useState(false)
+ const [editCommentState, setEditCommentState] = useState(false)
+ const [comment, setComment] = useState(content)
+
+ const updatePost = (e: { preventDefault: () => void }) => {
+  e.preventDefault();
+  const docRef= doc(db, "post", id);
+  updateDoc((docRef),{
+      content: comment,
+      createdAt: createdAt,
+      img: img,
+      score: count,
+      username: username,
+      id: id,
+      replies: replies
+  })
+  setRenderUpdatePost(comment)
+  setEditCommentState(false)
+ }
+
+ const editComment =
+ <form> 
+ <textarea value={comment} onChange={(e)=> setComment(e.target.value)}>
+ </textarea>
+ <button onClick={updatePost}>UPDATE</button>
+ </form>
 
  const deletePostRequest = () => {
   setShowPopup(true)
@@ -34,7 +60,7 @@ const Post = ({count, id, content, createdAt, username, img, replies, setNewRepl
  }
 
   let renderReply = replies.map((reply:any)=>{
-    return <Reply replyProps={reply} postId={id} setReplyComment={setReplyComment} setDeleteReply={setDeleteReply} setShowReplyPopup={setShowReplyPopup}/>})
+    return <Reply key={reply.id} replyProps={reply} postId={id} setReplyComment={setReplyComment} setDeleteReply={setDeleteReply} setShowReplyPopup={setShowReplyPopup}/>})
   return (
     <>
     <article className="post" key={id}>
@@ -61,14 +87,14 @@ const Post = ({count, id, content, createdAt, username, img, replies, setNewRepl
                 <DeleteIcon/>
                 <span>Delete</span>
               </div>
-              <div className="edit__container">
+              <div onClick={() => setEditCommentState(true)} className="edit__container">
               <EditIcon/>
               <span>Edit</span>
               </div>
             </div>}
           </div>
           <div className="post__right__bottom">
-            {content}
+            {editCommentState ? editComment : content}
           </div>
         </div>
     </article>

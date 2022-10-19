@@ -38,29 +38,34 @@ function App() {
   const [deleteReply, setDeleteReply] = useState("");
   const [showPopup, setShowPopup] = useState(false);
   const [showReplyPopup, setShowReplyPopup] = useState(false);
+  const [renderUpdatePost, setRenderUpdatePost] = useState("");
   
+  const fetchData = async () => {
+    const fdata = await getDocs(colRef)
+   .then((snapshot) => {
+       let posts:any= []
+       snapshot.docs.forEach((doc) => {
+         posts.push({ ...doc.data(), id: doc.id })
+       })
+       setData(posts)
+       console.log(newReplyComment)
+   })
+   }
+   console.log("rendered in component")
   useEffect(()=>{
-     const fetchData = async () => {
-     const fdata = await getDocs(colRef)
-    .then((snapshot) => {
-        let posts:any= []
-        snapshot.docs.forEach((doc) => {
-          posts.push({ ...doc.data(), id: doc.id })
-        })
-        setData(posts)
-        console.log(newReplyComment)
-    })
-    }
-    fetchData()
-  },[newComment, newReplyComment, deleteComment, deleteReply,showPopup, showReplyPopup])
+    const timer =setTimeout(()=> fetchData(), 75 )
+    return () => clearTimeout(timer);
+    
+  },[newComment, newReplyComment,showPopup,showReplyPopup, renderUpdatePost])
   const posts = data.map( post => {
     return <Post
     content={post.content} createdAt={post.createdAt}
-     count={post.score} id={post.id}
+     count={post.score} id={post.id} key={post.id}
      img={post.img} username={post.username}
      replies={post.replies} setNewReplyComment={setNewReplyComment}
      setDeleteComment={setDeleteComment} setDeleteReply={setDeleteReply}
      setShowPopup={setShowPopup} setShowReplyPopup={setShowReplyPopup}
+     setRenderUpdatePost={setRenderUpdatePost}
      />
   })
   return (
