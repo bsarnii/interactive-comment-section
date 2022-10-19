@@ -4,11 +4,51 @@ import { ReactComponent as MinusIcon } from "../assets/icon-minus.svg"
 import { ReactComponent as ReplyIcon } from "../assets/icon-reply.svg"
 import { ReactComponent as EditIcon } from "../assets/icon-edit.svg"
 import { ReactComponent as DeleteIcon } from "../assets/icon-delete.svg"
+import { useState } from "react"
 import {db} from "../firebase"
-import { doc, updateDoc, arrayRemove } from "firebase/firestore"
+import { doc, updateDoc, arrayRemove, arrayUnion } from "firebase/firestore"
 
 
-const Reply = ({replyProps, setReplyComment, postId, setDeleteReply, setShowReplyPopup}:any) => {
+const Reply = ({replyProps, setReplyComment, postId, setDeleteReply, setShowReplyPopup, setRenderUpdateReply}:any) => {
+
+  const [editCommentState, setEditCommentState] = useState(false);
+  const [comment, setComment] = useState(replyProps.content);
+
+  const updateReply = (e: { preventDefault: () => void }) => {
+    e.preventDefault();
+    const docRef=doc(db,"post",postId)
+    
+    updateDoc(docRef,{
+      replies:arrayUnion({
+        content: comment,
+        createdAt: replyProps.createdAt,
+        id: Math.random()*10,
+        img: replyProps.img,
+        score: replyProps.score,
+        username: replyProps.username
+      })
+    })
+
+    updateDoc(docRef,{
+      replies:arrayRemove({
+        content: replyProps.content,
+        createdAt: replyProps.createdAt,
+        id: replyProps.id,
+        img: replyProps.img,
+        score: replyProps.score,
+        username: replyProps.username
+      })
+    })
+    setRenderUpdateReply(comment)
+    setEditCommentState(false)
+  }
+
+  const editComment =
+ <form> 
+ <textarea value={comment} onChange={(e)=> setComment(e.target.value)}>
+ </textarea>
+ <button onClick={updateReply}>UPDATE</button>
+ </form>
 
   const deleteReplyComment = () => {
     setShowReplyPopup(true)
@@ -50,14 +90,14 @@ const Reply = ({replyProps, setReplyComment, postId, setDeleteReply, setShowRepl
                 <DeleteIcon/>
                 <span>Delete</span>
               </div>
-              <div className="edit__container">
+              <div onClick={()=> setEditCommentState(true)} className="edit__container">
               <EditIcon/>
               <span>Edit</span>
               </div>
             </div>}
           </div>
           <div className="post__right__bottom">
-            {replyProps.content}
+          {editCommentState ? editComment : replyProps.content}
           </div>
         </div>
     </article>

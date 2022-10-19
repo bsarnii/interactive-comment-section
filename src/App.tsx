@@ -39,6 +39,7 @@ function App() {
   const [showPopup, setShowPopup] = useState(false);
   const [showReplyPopup, setShowReplyPopup] = useState(false);
   const [renderUpdatePost, setRenderUpdatePost] = useState("");
+  const [renderUpdateReply,setRenderUpdateReply] = useState("");
   
   const fetchData = async () => {
     const fdata = await getDocs(colRef)
@@ -53,10 +54,10 @@ function App() {
    }
    console.log("rendered in component")
   useEffect(()=>{
-    const timer =setTimeout(()=> fetchData(), 75 )
+    const timer =setTimeout(()=> fetchData(), 300 )
     return () => clearTimeout(timer);
     
-  },[newComment, newReplyComment,showPopup,showReplyPopup, renderUpdatePost])
+  },[newComment, newReplyComment,showPopup,showReplyPopup, renderUpdatePost, renderUpdateReply])
   const posts = data.map( post => {
     return <Post
     content={post.content} createdAt={post.createdAt}
@@ -65,7 +66,7 @@ function App() {
      replies={post.replies} setNewReplyComment={setNewReplyComment}
      setDeleteComment={setDeleteComment} setDeleteReply={setDeleteReply}
      setShowPopup={setShowPopup} setShowReplyPopup={setShowReplyPopup}
-     setRenderUpdatePost={setRenderUpdatePost}
+     setRenderUpdatePost={setRenderUpdatePost} setRenderUpdateReply={setRenderUpdateReply}
      />
   })
   return (

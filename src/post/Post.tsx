@@ -24,9 +24,10 @@ type Props = {
   setShowPopup:any
   setShowReplyPopup:any
   setRenderUpdatePost: any
+  setRenderUpdateReply: any
 }
 
-const Post = ({count, id, content, createdAt, username, img, replies, setNewReplyComment, setDeleteComment, setDeleteReply, setShowPopup, setShowReplyPopup, setRenderUpdatePost}:Props) => {
+const Post = ({count, id, content, createdAt, username, img, replies, setNewReplyComment, setDeleteComment, setDeleteReply, setShowPopup, setShowReplyPopup, setRenderUpdatePost, setRenderUpdateReply}:Props) => {
  const [replyComment, setReplyComment] = useState(false)
  const [editCommentState, setEditCommentState] = useState(false)
  const [comment, setComment] = useState(content)
@@ -60,7 +61,7 @@ const Post = ({count, id, content, createdAt, username, img, replies, setNewRepl
  }
 
   let renderReply = replies.map((reply:any)=>{
-    return <Reply key={reply.id} replyProps={reply} postId={id} setReplyComment={setReplyComment} setDeleteReply={setDeleteReply} setShowReplyPopup={setShowReplyPopup}/>})
+    return <Reply key={reply.id} replyProps={reply} postId={id} setReplyComment={setReplyComment} setDeleteReply={setDeleteReply} setShowReplyPopup={setShowReplyPopup} setRenderUpdateReply={setRenderUpdateReply}/>})
   return (
     <>
     <article className="post" key={id}>
