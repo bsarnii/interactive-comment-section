@@ -9,7 +9,7 @@ import {db} from "../firebase"
 import { doc, updateDoc, arrayRemove, arrayUnion } from "firebase/firestore"
 
 
-const Reply = ({replyProps, setReplyComment, postId, setDeleteReply, setShowReplyPopup, setRenderUpdateReply}:any) => {
+const Reply = ({replyProps, setReplyComment, postId, setDeleteReply, setShowReplyPopup, setRenderUpdateReply,setReplyingToState}:any) => {
 
   const [editCommentState, setEditCommentState] = useState(false);
   const [comment, setComment] = useState(replyProps.content);
@@ -25,7 +25,8 @@ const Reply = ({replyProps, setReplyComment, postId, setDeleteReply, setShowRepl
         id: Math.random()*10,
         img: replyProps.img,
         score: replyProps.score,
-        username: replyProps.username
+        username: replyProps.username,
+        replyingTo: replyProps.replyingTo
       })
     })
 
@@ -36,7 +37,8 @@ const Reply = ({replyProps, setReplyComment, postId, setDeleteReply, setShowRepl
         id: replyProps.id,
         img: replyProps.img,
         score: replyProps.score,
-        username: replyProps.username
+        username: replyProps.username,
+        replyingTo: replyProps.replyingTo
       })
     })
     setRenderUpdateReply(comment)
@@ -60,7 +62,8 @@ const Reply = ({replyProps, setReplyComment, postId, setDeleteReply, setShowRepl
         id: replyProps.id,
         img: replyProps.img,
         score: replyProps.score,
-        username: replyProps.username
+        username: replyProps.username,
+        replyingTo: replyProps.replyingTo
       }
     })
   }
@@ -80,7 +83,7 @@ const Reply = ({replyProps, setReplyComment, postId, setDeleteReply, setShowRepl
               <div className="time">{replyProps.createdAt}</div>
             </div>
             {replyProps.username != "juliusomo" ?
-            <div onClick={() => setReplyComment(true)} className="reply__container">
+            <div onClick={() => {setReplyComment(true);setReplyingToState(replyProps.username)}} className="reply__container">
               <ReplyIcon/>
               <span>Reply</span>
             </div>
@@ -97,7 +100,12 @@ const Reply = ({replyProps, setReplyComment, postId, setDeleteReply, setShowRepl
             </div>}
           </div>
           <div className="post__right__bottom">
-          {editCommentState ? editComment : replyProps.content}
+          {editCommentState ? editComment : 
+          <>
+          <span className="postUsername">@{replyProps.replyingTo} </span> 
+          <span>{replyProps.content}</span>
+          </>
+          }
           </div>
         </div>
     </article>

@@ -31,6 +31,8 @@ const Post = ({count, id, content, createdAt, username, img, replies, setNewRepl
  const [replyComment, setReplyComment] = useState(false)
  const [editCommentState, setEditCommentState] = useState(false)
  const [comment, setComment] = useState(content)
+ const [replyingToState, setReplyingToState] = useState("")
+
 
  const updatePost = (e: { preventDefault: () => void }) => {
   e.preventDefault();
@@ -61,7 +63,7 @@ const Post = ({count, id, content, createdAt, username, img, replies, setNewRepl
  }
 
   let renderReply = replies.map((reply:any)=>{
-    return <Reply key={reply.id} replyProps={reply} postId={id} setReplyComment={setReplyComment} setDeleteReply={setDeleteReply} setShowReplyPopup={setShowReplyPopup} setRenderUpdateReply={setRenderUpdateReply}/>})
+    return <Reply key={reply.id} setReplyingToState={setReplyingToState} replyProps={reply} postId={id} setReplyComment={setReplyComment} setDeleteReply={setDeleteReply} setShowReplyPopup={setShowReplyPopup} setRenderUpdateReply={setRenderUpdateReply}/>})
   return (
     <>
     <article className="post" key={id}>
@@ -78,7 +80,7 @@ const Post = ({count, id, content, createdAt, username, img, replies, setNewRepl
               <div className="time">{createdAt}</div>
             </div>
             {username != "juliusomo" ?
-            <div onClick={() => setReplyComment(true)} className="reply__container">
+            <div onClick={() => {setReplyComment(true);setReplyingToState(username)}} className="reply__container">
               <ReplyIcon/>
               <span>Reply</span>
             </div>
@@ -101,7 +103,7 @@ const Post = ({count, id, content, createdAt, username, img, replies, setNewRepl
     </article>
     <div className="replies">
      {renderReply}
-     {replyComment === true ? <ReplyComment id={id} setNewReplyComment={setNewReplyComment} setReplyComment={setReplyComment}/> : ""}
+     {replyComment === true ? <ReplyComment id={id} replyingToState={replyingToState} setNewReplyComment={setNewReplyComment} setReplyComment={setReplyComment}/> : ""}
     </div>
     </>
   )

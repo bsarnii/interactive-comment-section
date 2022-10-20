@@ -6,9 +6,10 @@ import { doc, updateDoc, arrayUnion } from "firebase/firestore"
 type Props = {
   id:string,
   setNewReplyComment:any,
-  setReplyComment: any
+  setReplyComment: any,
+  replyingToState:any
 }
-const ReplyComment = ({id, setNewReplyComment, setReplyComment}:Props) => {
+const ReplyComment = ({id, setNewReplyComment, setReplyComment, replyingToState}:Props) => {
   const [comment, setComment] = useState("");
   const addReply = (e: { preventDefault: () => void }) => {
         e.preventDefault();
@@ -21,7 +22,8 @@ const ReplyComment = ({id, setNewReplyComment, setReplyComment}:Props) => {
             img: "../src/assets/avatars/image-juliusomo.png",
             score: 1,
             username: "juliusomo",
-            id: replyId
+            id: replyId,
+            replyingTo: replyingToState
           })
         })
         setNewReplyComment(replyId)

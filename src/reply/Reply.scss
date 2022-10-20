@@ -1,3 +1,4 @@
+@import "../index.scss";
 .reply{
     width:80%;
     padding: 1rem;
@@ -6,4 +7,8 @@
     align-items: flex-start;
     margin: .15rem .5rem .5rem .5rem;
     border-radius: 1rem;
+}
+.postUsername{
+    color: $primary-blue;
+    font-weight: 500;
 }
