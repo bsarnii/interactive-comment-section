@@ -1,7 +1,7 @@
 import "./ReplyComment.scss"
 import { useState } from "react"
 import { db } from "../firebase"
-import { doc, updateDoc, arrayUnion } from "firebase/firestore"
+import { doc, updateDoc, arrayUnion, Timestamp } from "firebase/firestore"
 
 type Props = {
   id:string,
@@ -49,3 +49,7 @@ const ReplyComment = ({id, setNewReplyComment, setReplyComment, replyingToState}
 }
 
 export default ReplyComment
+
+function now(): any {
+  throw new Error("Function not implemented.")
+}

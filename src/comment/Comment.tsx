@@ -1,7 +1,7 @@
 import "./Comment.scss"
 import { useState } from "react"
 import { colRef } from "../firebase"
-import { addDoc } from "firebase/firestore"
+import { addDoc, serverTimestamp } from "firebase/firestore"
 
 const Comment = ({setNewComment}:any) => {
   const [comment, setComment] = useState("");
@@ -16,7 +16,8 @@ const Comment = ({setNewComment}:any) => {
       score: 1,
       username: "juliusomo",
       id: "3",
-      replies: []
+      replies: [],
+      timestamp: serverTimestamp()
     })
     setNewComment(Math.random()*10)
     setComment("");

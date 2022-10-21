@@ -13,6 +13,8 @@ const Reply = ({replyProps, setReplyComment, postId, setDeleteReply, setShowRepl
 
   const [editCommentState, setEditCommentState] = useState(false);
   const [comment, setComment] = useState(replyProps.content);
+  const [scoreState, setScoreState] = useState(replyProps.score)
+  console.log(scoreState)
 
   const updateReply = (e: { preventDefault: () => void }) => {
     e.preventDefault();
@@ -71,15 +73,16 @@ const Reply = ({replyProps, setReplyComment, postId, setDeleteReply, setShowRepl
   return (
     <article className="reply">
         <div className="post__left">
-          <div className="plus"><PlusIcon/></div>
-          <p className="score">{replyProps.score}</p>
-          <div className="minus"><MinusIcon/></div>
+          <div className="plus" onClick={()=> setScoreState(scoreState + 1)}><PlusIcon/></div>
+          <p className="score">{scoreState}</p>
+          <div className="minus" onClick={()=> setScoreState(scoreState - 1)}><MinusIcon/></div>
         </div>
         <div className="post__right">
           <div className="post__right__top">
             <div className="avatar__username__time">
               <img src={replyProps.img} alt="avatar" />
               <div className="username">{replyProps.username}</div>
+              {replyProps.username === "juliusomo" ? <div className="you">you</div> : ""}
               <div className="time">{replyProps.createdAt}</div>
             </div>
             {replyProps.username != "juliusomo" ?

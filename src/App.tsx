@@ -2,7 +2,7 @@ import './App.scss'
 import Post from './post/Post'
 import PostSkeleton from './post/PostSkeleton'
 import Comment from './comment/Comment'
-import { getDocs
+import { getDocs, onSnapshot, orderBy, query
 } from "firebase/firestore"
 import { colRef } from "./firebase"
 import { useEffect, useState } from 'react'
@@ -41,9 +41,9 @@ function App() {
   const [renderUpdatePost, setRenderUpdatePost] = useState("");
   const [renderUpdateReply,setRenderUpdateReply] = useState("");
   
-  const fetchData = async () => {
-    const fdata = await getDocs(colRef)
-   .then((snapshot) => {
+  const q = query(colRef, orderBy("timestamp"))
+  const fetchData =  () => {
+    onSnapshot(q,(snapshot) => {
        let posts:any= []
        snapshot.docs.forEach((doc) => {
          posts.push({ ...doc.data(), id: doc.id })

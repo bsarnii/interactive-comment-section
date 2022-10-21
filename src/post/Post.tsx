@@ -31,7 +31,8 @@ const Post = ({count, id, content, createdAt, username, img, replies, setNewRepl
  const [replyComment, setReplyComment] = useState(false)
  const [editCommentState, setEditCommentState] = useState(false)
  const [comment, setComment] = useState(content)
- const [replyingToState, setReplyingToState] = useState("")
+ const [replyingToState, setReplyingToState] = useState("");
+ const [scoreState, setScoreState] = useState(count)
 
 
  const updatePost = (e: { preventDefault: () => void }) => {
@@ -68,15 +69,16 @@ const Post = ({count, id, content, createdAt, username, img, replies, setNewRepl
     <>
     <article className="post" key={id}>
         <div className="post__left">
-          <div className="plus"><PlusIcon/></div>
-          <p className="score">{count}</p>
-          <div className="minus"><MinusIcon/></div>
+          <div className="plus" onClick={()=> setScoreState(scoreState + 1)}><PlusIcon/></div>
+          <p className="score">{scoreState}</p>
+          <div className="minus"  onClick={()=> setScoreState(scoreState - 1)}><MinusIcon/></div>
         </div>
         <div className="post__right">
           <div className="post__right__top">
             <div className="avatar__username__time">
               <img src={img} alt="" />
               <div className="username">{username}</div>
+              {username === "juliusomo" ? <div className="you">you</div> : ""}
               <div className="time">{createdAt}</div>
             </div>
             {username != "juliusomo" ?
