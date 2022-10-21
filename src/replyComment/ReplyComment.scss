@@ -49,3 +49,17 @@
         }
     }
 }
+
+@media screen and (max-width: 625px) {
+    .reply__comment{
+        form{
+            flex-direction: column-reverse;
+            position: relative;
+            button{
+                position:absolute;
+                bottom: 0;
+                right: 0;
+            }
+        }
+    }
+}
