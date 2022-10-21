@@ -49,10 +49,8 @@ function App() {
          posts.push({ ...doc.data(), id: doc.id })
        })
        setData(posts)
-       console.log(newReplyComment)
    })
    }
-   console.log("rendered in component")
   useEffect(()=>{
     const timer =setTimeout(()=> fetchData(), 300 )
     return () => clearTimeout(timer);
