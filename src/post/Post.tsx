@@ -67,7 +67,7 @@ const Post = ({count, id, content, createdAt, username, img, replies, setNewRepl
     return <Reply key={reply.id} setReplyingToState={setReplyingToState} replyProps={reply} postId={id} setReplyComment={setReplyComment} setDeleteReply={setDeleteReply} setShowReplyPopup={setShowReplyPopup} setRenderUpdateReply={setRenderUpdateReply}/>})
   return (
     <>
-    <article className="post" key={id}>
+    <article className="post">
         <div className="post__left">
           <div className="plus" onClick={()=> setScoreState(scoreState + 1)}><PlusIcon/></div>
           <p className="score">{scoreState}</p>

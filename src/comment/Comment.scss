@@ -48,3 +48,17 @@
         }
     }
 }
+// Mobile version //
+@media screen and (max-width: 625px) {
+    .comment{
+        form{
+            flex-direction: column-reverse;
+            position: relative;
+            button{
+                position:absolute;
+                bottom: 0;
+                right: 0;
+            }
+        }
+    }
+}

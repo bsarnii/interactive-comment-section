@@ -186,3 +186,54 @@
         
     }
 }
+
+// Mobile version //
+@media screen and (max-width: 625px) {
+    .post{
+        flex-direction: column-reverse;
+        position: relative;
+    }
+    .post__left{
+        margin-top: .5rem;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        .plus,.minus{
+            padding: 0.3rem 1rem;
+        }
+        .minus{
+            padding-bottom: 0.6rem;
+        }
+    }
+    .reply__container{
+        position: absolute;
+        bottom: 1.5rem;
+        right: 1.5rem;
+    }
+    .post__right{
+        .delete__edit__container{
+            position: absolute;
+            bottom: 1.5rem;
+            right: 1.2rem;
+            gap: 1rem;
+        }
+        .post__right__top{
+            .avatar__username__time{
+                gap: 0.7rem;
+            }
+        }
+    }
+    .replies{
+        &::before{
+            content: "";
+            background-color: $lightgray;
+            width: 3px;
+            height: 90%;
+            position:absolute;
+            left:4%;
+            top:50%;
+            transform: translateY(-50%);
+            
+        }
+    }
+}

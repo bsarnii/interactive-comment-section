@@ -14,7 +14,6 @@ const Reply = ({replyProps, setReplyComment, postId, setDeleteReply, setShowRepl
   const [editCommentState, setEditCommentState] = useState(false);
   const [comment, setComment] = useState(replyProps.content);
   const [scoreState, setScoreState] = useState(replyProps.score)
-  console.log(scoreState)
 
   const updateReply = (e: { preventDefault: () => void }) => {
     e.preventDefault();

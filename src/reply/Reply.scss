@@ -12,3 +12,12 @@
     color: $primary-blue;
     font-weight: 500;
 }
+
+// Mobile version //
+@media screen and (max-width: 625px) {
+    .reply{
+        flex-direction: column-reverse;
+        position: relative;
+        width:90%;
+    }
+}
