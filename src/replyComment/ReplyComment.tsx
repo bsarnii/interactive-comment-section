@@ -19,7 +19,7 @@ const ReplyComment = ({id, setNewReplyComment, setReplyComment, replyingToState}
           replies:arrayUnion({
             content: comment,
             createdAt: "1 minute ago",
-            img: "../src/assets/avatars/image-juliusomo.png",
+            img: "./assets/avatars/image-juliusomo.png",
             score: 1,
             username: "juliusomo",
             id: replyId,
