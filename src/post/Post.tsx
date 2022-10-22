@@ -9,6 +9,9 @@ import ReplyComment from "../replyComment/ReplyComment"
 import { useState } from "react"
 import {db} from "../firebase"
 import { doc, updateDoc } from "firebase/firestore"
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+
 
 type Props = {
   count: any
@@ -24,15 +27,22 @@ type Props = {
   setShowPopup:any
   setShowReplyPopup:any
   setRenderUpdatePost: any
-  setRenderUpdateReply: any
+  setRenderUpdateReply: any,
+  timestamp: any
 }
 
-const Post = ({count, id, content, createdAt, username, img, replies, setNewReplyComment, setDeleteComment, setDeleteReply, setShowPopup, setShowReplyPopup, setRenderUpdatePost, setRenderUpdateReply}:Props) => {
+const Post = ({count,timestamp, id, content, createdAt, username, img, replies, setNewReplyComment, setDeleteComment, setDeleteReply, setShowPopup, setShowReplyPopup, setRenderUpdatePost, setRenderUpdateReply}:Props) => {
  const [replyComment, setReplyComment] = useState(false)
  const [editCommentState, setEditCommentState] = useState(false)
  const [comment, setComment] = useState(content)
  const [replyingToState, setReplyingToState] = useState("");
  const [scoreState, setScoreState] = useState(count)
+ dayjs.extend(relativeTime)
+ let timeAgo:String= "";
+if (timestamp != undefined) {
+  timeAgo=dayjs(new Date(timestamp.toDate())).fromNow()
+  console.log(dayjs(new Date(timestamp.toDate())).fromNow())
+}
 
 
  const updatePost = (e: { preventDefault: () => void }) => {
@@ -79,7 +89,7 @@ const Post = ({count, id, content, createdAt, username, img, replies, setNewRepl
               <img src={img} alt="" />
               <div className="username">{username}</div>
               {username === "juliusomo" ? <div className="you">you</div> : ""}
-              <div className="time">{createdAt}</div>
+              <div className="time">{timeAgo}</div>
             </div>
             {username != "juliusomo" ?
             <div onClick={() => {setReplyComment(true);setReplyingToState(username)}} className="reply__container">

@@ -28,7 +28,8 @@ function App() {
     img: "",
     score: 0,
     username: "",
-    replies: []
+    replies: [],
+    timestamp: ""
   }
 ]);
         //Getting props from child//
@@ -60,7 +61,7 @@ function App() {
     return <Post
     content={post.content} createdAt={post.createdAt}
      count={post.score} id={post.id} key={post.id}
-     img={post.img} username={post.username}
+     img={post.img} username={post.username} timestamp={post.timestamp}
      replies={post.replies} setNewReplyComment={setNewReplyComment}
      setDeleteComment={setDeleteComment} setDeleteReply={setDeleteReply}
      setShowPopup={setShowPopup} setShowReplyPopup={setShowReplyPopup}
