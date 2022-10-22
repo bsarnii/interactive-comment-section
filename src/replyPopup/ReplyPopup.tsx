@@ -14,7 +14,8 @@ const ReplyPopup = ({setShowReplyPopup,deleteReply}:any) => {
         img: deleteReply.replies.img,
         score: deleteReply.replies.score,
         username: deleteReply.replies.username,
-        replyingTo: deleteReply.replies.replyingTo
+        replyingTo: deleteReply.replies.replyingTo,
+        timestamp: deleteReply.replies.timestamp
       })
     })
   setShowReplyPopup(false)

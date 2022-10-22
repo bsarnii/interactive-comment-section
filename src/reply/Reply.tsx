@@ -6,8 +6,9 @@ import { ReactComponent as EditIcon } from "../assets/icon-edit.svg"
 import { ReactComponent as DeleteIcon } from "../assets/icon-delete.svg"
 import { useState } from "react"
 import {db} from "../firebase"
-import { doc, updateDoc, arrayRemove, arrayUnion } from "firebase/firestore"
-
+import { doc, updateDoc, arrayRemove, arrayUnion, serverTimestamp } from "firebase/firestore"
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
 
 const Reply = ({replyProps, setReplyComment, postId, setDeleteReply, setShowReplyPopup, setRenderUpdateReply,setReplyingToState}:any) => {
 
@@ -15,10 +16,14 @@ const Reply = ({replyProps, setReplyComment, postId, setDeleteReply, setShowRepl
   const [comment, setComment] = useState(replyProps.content);
   const [scoreState, setScoreState] = useState(replyProps.score)
 
+  let timeAgo:String= "";
+  if (replyProps.timestamp != undefined) {
+    timeAgo=dayjs(new Date(replyProps.timestamp.toDate())).fromNow()
+    console.log(dayjs(new Date(replyProps.timestamp.toDate())).fromNow())
+  }
   const updateReply = (e: { preventDefault: () => void }) => {
     e.preventDefault();
     const docRef=doc(db,"post",postId)
-    
     updateDoc(docRef,{
       replies:arrayUnion({
         content: comment,
@@ -27,7 +32,8 @@ const Reply = ({replyProps, setReplyComment, postId, setDeleteReply, setShowRepl
         img: replyProps.img,
         score: replyProps.score,
         username: replyProps.username,
-        replyingTo: replyProps.replyingTo
+        replyingTo: replyProps.replyingTo,
+        timestamp: replyProps.timestamp
       })
     })
 
@@ -39,7 +45,8 @@ const Reply = ({replyProps, setReplyComment, postId, setDeleteReply, setShowRepl
         img: replyProps.img,
         score: replyProps.score,
         username: replyProps.username,
-        replyingTo: replyProps.replyingTo
+        replyingTo: replyProps.replyingTo,
+        timestamp: replyProps.timestamp
       })
     })
     setRenderUpdateReply(comment)
@@ -64,7 +71,8 @@ const Reply = ({replyProps, setReplyComment, postId, setDeleteReply, setShowRepl
         img: replyProps.img,
         score: replyProps.score,
         username: replyProps.username,
-        replyingTo: replyProps.replyingTo
+        replyingTo: replyProps.replyingTo,
+        timestamp: replyProps.timestamp
       }
     })
   }
@@ -82,7 +90,7 @@ const Reply = ({replyProps, setReplyComment, postId, setDeleteReply, setShowRepl
               <img src={replyProps.img} alt="avatar" />
               <div className="username">{replyProps.username}</div>
               {replyProps.username === "juliusomo" ? <div className="you">you</div> : ""}
-              <div className="time">{replyProps.createdAt}</div>
+              <div className="time">{timeAgo}</div>
             </div>
             {replyProps.username != "juliusomo" ?
             <div onClick={() => {setReplyComment(true);setReplyingToState(replyProps.username)}} className="reply__container">

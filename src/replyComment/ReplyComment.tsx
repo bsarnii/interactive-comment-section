@@ -4,6 +4,7 @@ import { db } from "../firebase"
 import { doc, updateDoc, arrayUnion } from "firebase/firestore"
 import avatar from "../assets/avatars/image-juliusomo.png"
 
+
 type Props = {
   id:string,
   setNewReplyComment:any,
@@ -24,7 +25,8 @@ const ReplyComment = ({id, setNewReplyComment, setReplyComment, replyingToState}
             score: 1,
             username: "juliusomo",
             id: replyId,
-            replyingTo: replyingToState
+            replyingTo: replyingToState,
+            timestamp: new Date()
           })
         })
         setNewReplyComment(replyId)
