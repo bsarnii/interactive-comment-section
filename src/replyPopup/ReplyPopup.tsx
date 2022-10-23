@@ -1,8 +1,13 @@
 import "./ReplyPopup.scss";
 import {db} from "../firebase"
 import { doc, updateDoc, arrayRemove } from "firebase/firestore"
+import {IDeleteReply} from "../App"
 
-const ReplyPopup = ({setShowReplyPopup,deleteReply}:any) => {
+type props = {
+  setShowReplyPopup:React.Dispatch<React.SetStateAction<boolean>>
+  deleteReply: IDeleteReply
+}
+const ReplyPopup = ({setShowReplyPopup,deleteReply}:props) => {
 
   const deleteConfirm = () => {
     const docRef=doc(db,"post",deleteReply.postId)

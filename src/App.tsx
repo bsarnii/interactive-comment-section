@@ -2,23 +2,13 @@ import './App.scss'
 import Post from './post/Post'
 import PostSkeleton from './post/PostSkeleton'
 import Comment from './comment/Comment'
-import { getDocs, onSnapshot, orderBy, query
+import { onSnapshot, orderBy, query
 } from "firebase/firestore"
 import { colRef } from "./firebase"
 import { useEffect, useState } from 'react'
 import PostPopup from "./postPopup/PostPopup"
 import ReplyPopup from './replyPopup/ReplyPopup'
-
-type data = {
-  content:string,
-  id: string,
-  img: string,
-  score: number,
-  username: string,
-  imgClass: string,
-  textClass: string,
-  replies: []
-}
+export interface IDeleteReply {postId: string; replies: {content:string,id:number,img:string,score:number,username:string,replyingTo:string,timestamp:any}}
 function App() {
   const [data, setData] = useState([{
     content: "",
@@ -31,10 +21,10 @@ function App() {
   }
 ]);
         //Getting props from child//
-  const [newComment, setNewComment] = useState(null);
-  const [newReplyComment, setNewReplyComment] = useState("");
+  const [newComment, setNewComment] = useState(0);
+  const [newReplyComment, setNewReplyComment] = useState(0);
   const [deleteComment, setDeleteComment] = useState("");
-  const [deleteReply, setDeleteReply] = useState("");
+  const [deleteReply, setDeleteReply] = useState<IDeleteReply>({postId: "", replies: {content:"",id:0,img:"",score:0,username:"",replyingTo:"",timestamp:""}});
   const [showPopup, setShowPopup] = useState(false);
   const [showReplyPopup, setShowReplyPopup] = useState(false);
   const [renderUpdatePost, setRenderUpdatePost] = useState("");

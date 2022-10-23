@@ -7,9 +7,9 @@ import avatar from "../assets/avatars/image-juliusomo.png"
 
 type Props = {
   id:string,
-  setNewReplyComment:any,
-  setReplyComment: any,
-  replyingToState:any
+  setNewReplyComment: React.Dispatch<React.SetStateAction<number>>,
+  setReplyComment: React.Dispatch<React.SetStateAction<boolean>>,
+  replyingToState: string
 }
 const ReplyComment = ({id, setNewReplyComment, setReplyComment, replyingToState}:Props) => {
   const [comment, setComment] = useState("");

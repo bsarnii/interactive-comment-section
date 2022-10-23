@@ -8,8 +8,19 @@ import { useState } from "react"
 import {db} from "../firebase"
 import { doc, updateDoc, arrayRemove, arrayUnion} from "firebase/firestore"
 import dayjs from "dayjs";
+import {IDeleteReply} from "../App"
 
-const Reply = ({replyProps, setReplyComment, postId, setDeleteReply, setShowReplyPopup, setRenderUpdateReply,setReplyingToState}:any) => {
+type Props = {
+  replyProps: {content: string, score: number, timestamp:any,
+     img:string, username:string, replyingTo:string, id:number}
+  setReplyComment: React.Dispatch<React.SetStateAction<boolean>>
+  postId: string
+  setDeleteReply: React.Dispatch<React.SetStateAction<IDeleteReply>>
+  setShowReplyPopup: React.Dispatch<React.SetStateAction<boolean>>
+  setRenderUpdateReply: React.Dispatch<React.SetStateAction<string>>
+  setReplyingToState: React.Dispatch<React.SetStateAction<string>>
+}
+const Reply = ({replyProps, setReplyComment, postId, setDeleteReply, setShowReplyPopup, setRenderUpdateReply,setReplyingToState}:Props) => {
 
   const [editCommentState, setEditCommentState] = useState(false);
   const [comment, setComment] = useState(replyProps.content);

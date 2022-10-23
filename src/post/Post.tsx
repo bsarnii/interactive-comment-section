@@ -11,22 +11,23 @@ import {db} from "../firebase"
 import { doc, updateDoc } from "firebase/firestore"
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+import {IDeleteReply} from "../App"
 
 
 type Props = {
-  count: any
+  count: number
   id: string,
-  content: any,
-  img:any,
-  username:any
-  replies: any
-  setNewReplyComment:any
-  setDeleteComment:any
-  setDeleteReply:any
-  setShowPopup:any
-  setShowReplyPopup:any
-  setRenderUpdatePost: any
-  setRenderUpdateReply: any,
+  content: string,
+  img: string,
+  username: string
+  replies: object[]
+  setNewReplyComment: React.Dispatch<React.SetStateAction<number>>
+  setDeleteComment: React.Dispatch<React.SetStateAction<string>>
+  setDeleteReply: React.Dispatch<React.SetStateAction<IDeleteReply>>
+  setShowPopup: React.Dispatch<React.SetStateAction<boolean>>
+  setShowReplyPopup: React.Dispatch<React.SetStateAction<boolean>>
+  setRenderUpdatePost: React.Dispatch<React.SetStateAction<string>>
+  setRenderUpdateReply: React.Dispatch<React.SetStateAction<string>>
   timestamp: any
 }
 

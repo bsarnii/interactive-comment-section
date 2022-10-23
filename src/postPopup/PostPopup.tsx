@@ -2,7 +2,11 @@ import "./PostPopup.scss";
 import {db} from "../firebase"
 import { doc, deleteDoc } from "firebase/firestore"
 
-const PostPopup = ({ setShowPopup, deleteComment }:any) => {
+type props = {
+  setShowPopup: React.Dispatch<React.SetStateAction<boolean>>
+  deleteComment: string
+}
+const PostPopup = ({ setShowPopup, deleteComment }:props) => {
   const deleteConfirm = () => {
     const docRef=doc(db,"post", deleteComment)
     deleteDoc(docRef)

@@ -4,7 +4,10 @@ import { colRef } from "../firebase"
 import { addDoc, serverTimestamp } from "firebase/firestore"
 import avatar from "../assets/avatars/image-juliusomo.png"
 
-const Comment = ({setNewComment}:any) => {
+type prop = {
+  setNewComment: React.Dispatch<React.SetStateAction<number>>
+}
+const Comment = ({setNewComment}:prop) => {
   const [comment, setComment] = useState("");
 
   const sendPost = (e: { preventDefault: () => void }) => {
