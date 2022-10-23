@@ -9,7 +9,6 @@ const ReplyPopup = ({setShowReplyPopup,deleteReply}:any) => {
     updateDoc(docRef,{
       replies:arrayRemove({
         content: deleteReply.replies.content,
-        createdAt: deleteReply.replies.createdAt,
         id: deleteReply.replies.id,
         img: deleteReply.replies.img,
         score: deleteReply.replies.score,

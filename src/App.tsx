@@ -11,7 +11,6 @@ import ReplyPopup from './replyPopup/ReplyPopup'
 
 type data = {
   content:string,
-  createdAt: string,
   id: string,
   img: string,
   score: number,
@@ -23,7 +22,6 @@ type data = {
 function App() {
   const [data, setData] = useState([{
     content: "",
-    createdAt: "",
     id: "",
     img: "",
     score: 0,
@@ -59,7 +57,7 @@ function App() {
   },[newComment, newReplyComment,showPopup,showReplyPopup, renderUpdatePost, renderUpdateReply])
   const posts = data.map( post => {
     return <Post
-    content={post.content} createdAt={post.createdAt}
+    content={post.content}
      count={post.score} id={post.id} key={post.id}
      img={post.img} username={post.username} timestamp={post.timestamp}
      replies={post.replies} setNewReplyComment={setNewReplyComment}

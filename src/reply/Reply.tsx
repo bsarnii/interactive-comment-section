@@ -6,9 +6,8 @@ import { ReactComponent as EditIcon } from "../assets/icon-edit.svg"
 import { ReactComponent as DeleteIcon } from "../assets/icon-delete.svg"
 import { useState } from "react"
 import {db} from "../firebase"
-import { doc, updateDoc, arrayRemove, arrayUnion, serverTimestamp } from "firebase/firestore"
+import { doc, updateDoc, arrayRemove, arrayUnion} from "firebase/firestore"
 import dayjs from "dayjs";
-import relativeTime from "dayjs/plugin/relativeTime";
 
 const Reply = ({replyProps, setReplyComment, postId, setDeleteReply, setShowReplyPopup, setRenderUpdateReply,setReplyingToState}:any) => {
 
@@ -27,7 +26,6 @@ const Reply = ({replyProps, setReplyComment, postId, setDeleteReply, setShowRepl
     updateDoc(docRef,{
       replies:arrayUnion({
         content: comment,
-        createdAt: replyProps.createdAt,
         id: Math.random()*10,
         img: replyProps.img,
         score: replyProps.score,
@@ -40,7 +38,6 @@ const Reply = ({replyProps, setReplyComment, postId, setDeleteReply, setShowRepl
     updateDoc(docRef,{
       replies:arrayRemove({
         content: replyProps.content,
-        createdAt: replyProps.createdAt,
         id: replyProps.id,
         img: replyProps.img,
         score: replyProps.score,
@@ -66,7 +63,6 @@ const Reply = ({replyProps, setReplyComment, postId, setDeleteReply, setShowRepl
       postId:postId,
       replies:{
         content: replyProps.content,
-        createdAt: replyProps.createdAt,
         id: replyProps.id,
         img: replyProps.img,
         score: replyProps.score,

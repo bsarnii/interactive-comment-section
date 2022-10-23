@@ -20,7 +20,6 @@ const ReplyComment = ({id, setNewReplyComment, setReplyComment, replyingToState}
         updateDoc((docRef), {
           replies:arrayUnion({
             content: comment,
-            createdAt: "1 minute ago",
             img: "./assets/avatars/image-juliusomo.png",
             score: 1,
             username: "juliusomo",

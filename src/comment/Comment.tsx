@@ -11,7 +11,6 @@ const Comment = ({setNewComment}:any) => {
     e.preventDefault();
     addDoc((colRef), {
       content: comment,
-      createdAt: "1 minute ago",
       img: "./assets/avatars/image-juliusomo.png",
       score: 1,
       username: "juliusomo",

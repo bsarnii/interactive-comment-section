@@ -18,7 +18,6 @@ type Props = {
   id: string,
   content: any,
   img:any,
-  createdAt:any,
   username:any
   replies: any
   setNewReplyComment:any
@@ -31,7 +30,7 @@ type Props = {
   timestamp: any
 }
 
-const Post = ({count,timestamp, id, content, createdAt, username, img, replies, setNewReplyComment, setDeleteComment, setDeleteReply, setShowPopup, setShowReplyPopup, setRenderUpdatePost, setRenderUpdateReply}:Props) => {
+const Post = ({count,timestamp, id, content, username, img, replies, setNewReplyComment, setDeleteComment, setDeleteReply, setShowPopup, setShowReplyPopup, setRenderUpdatePost, setRenderUpdateReply}:Props) => {
  const [replyComment, setReplyComment] = useState(false)
  const [editCommentState, setEditCommentState] = useState(false)
  const [comment, setComment] = useState(content)
@@ -50,7 +49,6 @@ if (timestamp != undefined) {
   const docRef= doc(db, "post", id);
   updateDoc((docRef),{
       content: comment,
-      createdAt: createdAt,
       img: img,
       score: count,
       username: username,
