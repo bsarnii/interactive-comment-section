@@ -29,7 +29,6 @@ const Reply = ({replyProps, setReplyComment, postId, setDeleteReply, setShowRepl
   let timeAgo:String= "";
   if (replyProps.timestamp != undefined) {
     timeAgo=dayjs(new Date(replyProps.timestamp.toDate())).fromNow()
-    console.log(dayjs(new Date(replyProps.timestamp.toDate())).fromNow())
   }
   const updateReply = (e: { preventDefault: () => void }) => {
     e.preventDefault();

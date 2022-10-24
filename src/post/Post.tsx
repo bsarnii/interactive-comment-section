@@ -41,7 +41,6 @@ const Post = ({count,timestamp, id, content, username, img, replies, setNewReply
  let timeAgo:String= "";
 if (timestamp != undefined) {
   timeAgo=dayjs(new Date(timestamp.toDate())).fromNow()
-  console.log(dayjs(new Date(timestamp.toDate())).fromNow())
 }
 
 
