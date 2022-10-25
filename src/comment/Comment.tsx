@@ -2,21 +2,21 @@ import "./Comment.scss"
 import { useState } from "react"
 import { colRef } from "../firebase"
 import { addDoc, serverTimestamp } from "firebase/firestore"
-import avatar from "../assets/avatars/image-juliusomo.png"
 
 type prop = {
   setNewComment: React.Dispatch<React.SetStateAction<number>>
+  userData: {username: string; img: string;}
 }
-const Comment = ({setNewComment}:prop) => {
+const Comment = ({setNewComment, userData}:prop) => {
   const [comment, setComment] = useState("");
 
   const sendPost = (e: { preventDefault: () => void }) => {
     e.preventDefault();
     addDoc((colRef), {
       content: comment,
-      img: "./assets/avatars/image-juliusomo.png",
+      img: userData.img,
       score: 1,
-      username: "juliusomo",
+      username: userData.username,
       id: "3",
       replies: [],
       timestamp: serverTimestamp()
@@ -29,7 +29,7 @@ const Comment = ({setNewComment}:prop) => {
   return (
     <section className="comment">
       <form>
-        <img src={avatar} alt="avatar"/>
+        <img src={userData.img} alt="avatar"/>
         <textarea
         placeholder="Add a comment..."
         value={comment}

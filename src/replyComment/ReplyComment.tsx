@@ -2,7 +2,6 @@ import "./ReplyComment.scss"
 import { useState } from "react"
 import { db } from "../firebase"
 import { doc, updateDoc, arrayUnion } from "firebase/firestore"
-import avatar from "../assets/avatars/image-juliusomo.png"
 
 
 type Props = {
@@ -10,8 +9,10 @@ type Props = {
   setNewReplyComment: React.Dispatch<React.SetStateAction<number>>,
   setReplyComment: React.Dispatch<React.SetStateAction<boolean>>,
   replyingToState: string
+  userData: {username: string; img: string;}
+  loggedIn: boolean
 }
-const ReplyComment = ({id, setNewReplyComment, setReplyComment, replyingToState}:Props) => {
+const ReplyComment = ({userData, loggedIn, id, setNewReplyComment, setReplyComment, replyingToState}:Props) => {
   const [comment, setComment] = useState("");
   const addReply = (e: { preventDefault: () => void }) => {
         e.preventDefault();
@@ -20,9 +21,9 @@ const ReplyComment = ({id, setNewReplyComment, setReplyComment, replyingToState}
         updateDoc((docRef), {
           replies:arrayUnion({
             content: comment,
-            img: "./assets/avatars/image-juliusomo.png",
+            img: userData.img,
             score: 1,
-            username: "juliusomo",
+            username: userData.username,
             id: replyId,
             replyingTo: replyingToState,
             timestamp: new Date()
@@ -37,7 +38,7 @@ const ReplyComment = ({id, setNewReplyComment, setReplyComment, replyingToState}
   return (
     <section className="reply__comment">
       <form>
-        <img src={avatar} alt="avatar"/>
+        <img src={userData.img} alt="avatar"/>
         <textarea
         placeholder="Add a comment..."
         value={comment}

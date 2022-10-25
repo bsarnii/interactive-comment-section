@@ -2,6 +2,7 @@ import './App.scss'
 import Post from './post/Post'
 import PostSkeleton from './post/PostSkeleton'
 import Comment from './comment/Comment'
+import Login from './login/Login'
 import { onSnapshot, orderBy, query
 } from "firebase/firestore"
 import { colRef } from "./firebase"
@@ -29,6 +30,8 @@ function App() {
   const [showReplyPopup, setShowReplyPopup] = useState(false);
   const [renderUpdatePost, setRenderUpdatePost] = useState("");
   const [renderUpdateReply,setRenderUpdateReply] = useState("");
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [userData, setUserData] = useState({username:" ",img:" "})
   
   const q = query(colRef, orderBy("timestamp"))
   const fetchData =  () => {
@@ -44,10 +47,11 @@ function App() {
     const timer =setTimeout(()=> fetchData(), 300 )
     return () => clearTimeout(timer);
     
-  },[newComment, newReplyComment,showPopup,showReplyPopup, renderUpdatePost, renderUpdateReply])
+    
+  },[newComment, newReplyComment,showPopup,showReplyPopup, renderUpdatePost, renderUpdateReply, loggedIn])
   const posts = data.map( post => {
     return <Post
-    content={post.content}
+    content={post.content} userData={userData} loggedIn={loggedIn}
      count={post.score} id={post.id} key={post.id}
      img={post.img} username={post.username} timestamp={post.timestamp}
      replies={post.replies} setNewReplyComment={setNewReplyComment}
@@ -59,6 +63,7 @@ function App() {
   return (
     <>
     <main className='container'>
+      {loggedIn===true ? "" : <Login setLoggedIn={setLoggedIn} setUserData={setUserData} />}
       <section className='posts'>
         {data.length > 1 ? 
         <>
@@ -74,7 +79,7 @@ function App() {
         </>
         }
       </section>
-      <Comment setNewComment={setNewComment} />
+      {loggedIn === false ? "" : <Comment setNewComment={setNewComment} userData={userData} />}
     </main>
     {showPopup ? <PostPopup setShowPopup={setShowPopup} deleteComment={deleteComment}/> : ""}
     {showReplyPopup ? <ReplyPopup setShowReplyPopup={setShowReplyPopup} deleteReply={deleteReply}/> : ""}

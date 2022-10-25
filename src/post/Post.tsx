@@ -29,9 +29,11 @@ type Props = {
   setRenderUpdatePost: React.Dispatch<React.SetStateAction<string>>
   setRenderUpdateReply: React.Dispatch<React.SetStateAction<string>>
   timestamp: any
+  userData: {username: string; img: string;}
+  loggedIn: boolean
 }
 
-const Post = ({count,timestamp, id, content, username, img, replies, setNewReplyComment, setDeleteComment, setDeleteReply, setShowPopup, setShowReplyPopup, setRenderUpdatePost, setRenderUpdateReply}:Props) => {
+const Post = ({loggedIn, userData, count,timestamp, id, content, username, img, replies, setNewReplyComment, setDeleteComment, setDeleteReply, setShowPopup, setShowReplyPopup, setRenderUpdatePost, setRenderUpdateReply}:Props) => {
  const [replyComment, setReplyComment] = useState(false)
  const [editCommentState, setEditCommentState] = useState(false)
  const [comment, setComment] = useState(content)
@@ -42,7 +44,6 @@ const Post = ({count,timestamp, id, content, username, img, replies, setNewReply
 if (timestamp != undefined) {
   timeAgo=dayjs(new Date(timestamp.toDate())).fromNow()
 }
-
 
  const updatePost = (e: { preventDefault: () => void }) => {
   e.preventDefault();
@@ -72,7 +73,7 @@ if (timestamp != undefined) {
  }
 
   let renderReply = replies.map((reply:any)=>{
-    return <Reply key={reply.id} setReplyingToState={setReplyingToState} replyProps={reply} postId={id} setReplyComment={setReplyComment} setDeleteReply={setDeleteReply} setShowReplyPopup={setShowReplyPopup} setRenderUpdateReply={setRenderUpdateReply}/>})
+    return <Reply loggedIn={loggedIn} userData={userData} key={reply.id} setReplyingToState={setReplyingToState} replyProps={reply} postId={id} setReplyComment={setReplyComment} setDeleteReply={setDeleteReply} setShowReplyPopup={setShowReplyPopup} setRenderUpdateReply={setRenderUpdateReply}/>})
   return (
     <>
     <article className="post">
@@ -86,10 +87,10 @@ if (timestamp != undefined) {
             <div className="avatar__username__time">
               <img src={img} alt="" />
               <div className="username">{username}</div>
-              {username === "juliusomo" ? <div className="you">you</div> : ""}
+              {username === userData.username ? <div className="you">you</div> : ""}
               <div className="time">{timeAgo}</div>
             </div>
-            {username != "juliusomo" ?
+            {loggedIn === false ? "" : username != userData.username ?
             <div onClick={() => {setReplyComment(true);setReplyingToState(username)}} className="reply__container">
               <ReplyIcon/>
               <span>Reply</span>
@@ -113,7 +114,7 @@ if (timestamp != undefined) {
     </article>
     <div className="replies">
      {renderReply}
-     {replyComment === true ? <ReplyComment id={id} replyingToState={replyingToState} setNewReplyComment={setNewReplyComment} setReplyComment={setReplyComment}/> : ""}
+     {replyComment === true ? <ReplyComment loggedIn={loggedIn} userData={userData} id={id} replyingToState={replyingToState} setNewReplyComment={setNewReplyComment} setReplyComment={setReplyComment}/> : ""}
     </div>
     </>
   )

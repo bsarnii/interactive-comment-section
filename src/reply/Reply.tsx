@@ -19,8 +19,10 @@ type Props = {
   setShowReplyPopup: React.Dispatch<React.SetStateAction<boolean>>
   setRenderUpdateReply: React.Dispatch<React.SetStateAction<string>>
   setReplyingToState: React.Dispatch<React.SetStateAction<string>>
+  loggedIn: boolean
+  userData: {username: string; img: string;}
 }
-const Reply = ({replyProps, setReplyComment, postId, setDeleteReply, setShowReplyPopup, setRenderUpdateReply,setReplyingToState}:Props) => {
+const Reply = ({loggedIn, userData, replyProps, setReplyComment, postId, setDeleteReply, setShowReplyPopup, setRenderUpdateReply,setReplyingToState}:Props) => {
 
   const [editCommentState, setEditCommentState] = useState(false);
   const [comment, setComment] = useState(replyProps.content);
@@ -95,10 +97,10 @@ const Reply = ({replyProps, setReplyComment, postId, setDeleteReply, setShowRepl
             <div className="avatar__username__time">
               <img src={replyProps.img} alt="avatar" />
               <div className="username">{replyProps.username}</div>
-              {replyProps.username === "juliusomo" ? <div className="you">you</div> : ""}
+              {replyProps.username === userData.username ? <div className="you">you</div> : ""}
               <div className="time">{timeAgo}</div>
             </div>
-            {replyProps.username != "juliusomo" ?
+            {loggedIn === false ? "" : replyProps.username != userData.username ?
             <div onClick={() => {setReplyComment(true);setReplyingToState(replyProps.username)}} className="reply__container">
               <ReplyIcon/>
               <span>Reply</span>
