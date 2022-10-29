@@ -33,7 +33,7 @@ function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [userData, setUserData] = useState({username:" ",img:" "})
   
-  const q = query(colRef, orderBy("timestamp"))
+  const q = query(colRef, orderBy("timestamp", "desc"))
   const fetchData =  () => {
     onSnapshot(q,(snapshot) => {
        let posts:any= []
@@ -64,6 +64,7 @@ function App() {
     <>
     <main className='container'>
       {loggedIn===true ? "" : <Login setLoggedIn={setLoggedIn} setUserData={setUserData} />}
+      {loggedIn === false ? "" : <Comment setNewComment={setNewComment} userData={userData} />}
       <section className='posts'>
         {data.length > 1 ? 
         <>
@@ -79,7 +80,6 @@ function App() {
         </>
         }
       </section>
-      {loggedIn === false ? "" : <Comment setNewComment={setNewComment} userData={userData} />}
     </main>
     {showPopup ? <PostPopup setShowPopup={setShowPopup} deleteComment={deleteComment}/> : ""}
     {showReplyPopup ? <ReplyPopup setShowReplyPopup={setShowReplyPopup} deleteReply={deleteReply}/> : ""}
