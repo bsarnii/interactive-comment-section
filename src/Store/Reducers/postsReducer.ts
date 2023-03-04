@@ -72,8 +72,8 @@ export const fetchPosts = createAsyncThunk('posts/fetchPosts', async(_,{dispatch
           // converting the timestamp to string in replies
           if (post.replies){
             post.replies.forEach(reply => {
-              reply.convertedTime = dayjs(new Date(reply.timestamp.toDate())).fromNow()
-              reply.timestamp = reply.timestamp && reply.timestamp.toMillis()
+              reply.convertedTime = reply.timestamp.toDate && dayjs(new Date(reply.timestamp.toDate())).fromNow()
+              reply.timestamp = reply.timestamp && reply.timestamp.toDate && reply.timestamp.toMillis()
             })
           }
          })

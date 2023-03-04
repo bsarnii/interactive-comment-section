@@ -8,22 +8,20 @@ import { ReactComponent as DeleteIcon } from "../assets/icon-delete.svg"
 import { useState } from "react"
 import {db} from "../firebase"
 import { doc, updateDoc, arrayRemove, arrayUnion} from "firebase/firestore"
-import dayjs from "dayjs";
-import {IDeleteReply} from "../App"
+import { deleteReplyInterface } from "../types/deleteReply.interface"
 
 type Props = {
   replyProps: {content: string, score: number, timestamp:any,
      img:string, username:string, replyingTo:string, id:number, convertedTime:string | undefined}
   setReplyComment: React.Dispatch<React.SetStateAction<boolean>>
   postId: string
-  setDeleteReply: React.Dispatch<React.SetStateAction<IDeleteReply>>
+  setDeleteReply: React.Dispatch<React.SetStateAction<deleteReplyInterface>>
   setShowReplyPopup: React.Dispatch<React.SetStateAction<boolean>>
-  setRenderUpdateReply: React.Dispatch<React.SetStateAction<string>>
   setReplyingToState: React.Dispatch<React.SetStateAction<string>>
   loggedIn: boolean
   userData: {username: string; img: string;}
 }
-const Reply = ({loggedIn, userData, replyProps, setReplyComment, postId, setDeleteReply, setShowReplyPopup, setRenderUpdateReply,setReplyingToState}:Props) => {
+const Reply = ({loggedIn, userData, replyProps, setReplyComment, postId, setDeleteReply, setShowReplyPopup,setReplyingToState}:Props) => {
 
   const [editCommentState, setEditCommentState] = useState(false);
   const [comment, setComment] = useState(replyProps.content);
@@ -55,8 +53,19 @@ const Reply = ({loggedIn, userData, replyProps, setReplyComment, postId, setDele
         timestamp: Timestamp.fromMillis(replyProps.timestamp)
       })
     })
-    setRenderUpdateReply(comment)
     setEditCommentState(false)
+  }
+
+  const addScore = () => {
+    setScoreState(scoreState + 1);
+    
+  }
+  const subtractScore = () => {
+    if (scoreState <= 0) {
+      return
+    }
+    setScoreState(scoreState - 1);
+
   }
 
   const editComment =
@@ -85,9 +94,9 @@ const Reply = ({loggedIn, userData, replyProps, setReplyComment, postId, setDele
   return (
     <article className="reply">
         <div className="post__left">
-          <div className="plus" onClick={()=> setScoreState(scoreState + 1)}><PlusIcon/></div>
+          <button disabled={!loggedIn} className="plus" onClick={()=> addScore()}><PlusIcon/></button>
           <p className="score">{scoreState}</p>
-          <div className="minus" onClick={()=> setScoreState(scoreState - 1)}><MinusIcon/></div>
+          <button disabled={!loggedIn} className="minus" onClick={()=> subtractScore()}><MinusIcon/></button>
         </div>
         <div className="post__right">
           <div className="post__right__top">

@@ -9,7 +9,7 @@ import ReplyComment from "../replyComment/ReplyComment"
 import { useState } from "react"
 import {db} from "../firebase"
 import { doc, updateDoc } from "firebase/firestore"
-import {IDeleteReply} from "../App"
+import { deleteReplyInterface } from "../types/deleteReply.interface"
 
 
 type Props = {
@@ -19,19 +19,16 @@ type Props = {
   img: string,
   username: string
   replies: object[]
+  convertedTime: string | undefined
   setDeleteComment: React.Dispatch<React.SetStateAction<string>>
-  setDeleteReply: React.Dispatch<React.SetStateAction<IDeleteReply>>
+  setDeleteReply: React.Dispatch<React.SetStateAction<deleteReplyInterface>>
   setShowPopup: React.Dispatch<React.SetStateAction<boolean>>
   setShowReplyPopup: React.Dispatch<React.SetStateAction<boolean>>
-  setRenderUpdatePost: React.Dispatch<React.SetStateAction<string>>
-  setRenderUpdateReply: React.Dispatch<React.SetStateAction<string>>
-  timestamp: any
   userData: {username: string; img: string;}
   loggedIn: boolean
-  convertedTime: string | undefined
 }
 
-const Post = ({loggedIn, userData, count,timestamp, convertedTime, id, content, username, img, replies, setDeleteComment, setDeleteReply, setShowPopup, setShowReplyPopup, setRenderUpdatePost, setRenderUpdateReply}:Props) => {
+const Post = ({loggedIn, userData, count, convertedTime, id, content, username, img, replies, setDeleteComment, setDeleteReply, setShowPopup, setShowReplyPopup}:Props) => {
  const [replyComment, setReplyComment] = useState(false)
  const [editCommentState, setEditCommentState] = useState(false)
  const [comment, setComment] = useState(content)
@@ -50,8 +47,35 @@ const Post = ({loggedIn, userData, count,timestamp, convertedTime, id, content, 
       id: id,
       replies: replies
   })
-  setRenderUpdatePost(comment)
   setEditCommentState(false)
+ }
+ const addScore = () => {
+  setScoreState(scoreState + 1);
+  const docRef= doc(db, "post", id);
+  updateDoc((docRef),{
+      content: comment,
+      img: img,
+      score: scoreState,
+      username: username,
+      id: id,
+      replies: replies
+  })
+ }
+
+ const subtractScore = () => {
+  if (scoreState <= 0) {
+    return
+  }
+  setScoreState(scoreState - 1);
+  const docRef= doc(db, "post", id);
+  updateDoc((docRef),{
+      content: comment,
+      img: img,
+      score: scoreState,
+      username: username,
+      id: id,
+      replies: replies
+  })
  }
 
  const editComment =
@@ -67,14 +91,14 @@ const Post = ({loggedIn, userData, count,timestamp, convertedTime, id, content, 
  }
 
   let renderReply = replies.map((reply:any)=>{
-    return <Reply loggedIn={loggedIn} userData={userData} key={reply.id} setReplyingToState={setReplyingToState} replyProps={reply} postId={id} setReplyComment={setReplyComment} setDeleteReply={setDeleteReply} setShowReplyPopup={setShowReplyPopup} setRenderUpdateReply={setRenderUpdateReply}/>})
+    return <Reply loggedIn={loggedIn} userData={userData} key={reply.id} setReplyingToState={setReplyingToState} replyProps={reply} postId={id} setReplyComment={setReplyComment} setDeleteReply={setDeleteReply} setShowReplyPopup={setShowReplyPopup}/>})
   return (
     <>
     <article className="post">
         <div className="post__left">
-          <div className="plus" onClick={()=> setScoreState(scoreState + 1)}><PlusIcon/></div>
+          <button disabled={!loggedIn} className="plus" onClick={()=> addScore()}><PlusIcon/></button>
           <p className="score">{scoreState}</p>
-          <div className="minus"  onClick={()=> setScoreState(scoreState - 1)}><MinusIcon/></div>
+          <button disabled={!loggedIn} className="minus"  onClick={()=> subtractScore()}><MinusIcon/></button>
         </div>
         <div className="post__right">
           <div className="post__right__top">

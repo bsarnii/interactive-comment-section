@@ -11,7 +11,6 @@ const Login = ({setLoggedIn,setUserData}:any) => {
     .then((re)=>{
       setLoggedIn(true)
       setUserData({username:re.user.displayName,img:re.user.photoURL})
-      console.log(re)
     })
     .catch((err)=>{
       setLoggedIn(false)
