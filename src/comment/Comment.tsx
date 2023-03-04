@@ -4,10 +4,9 @@ import { colRef } from "../firebase"
 import { addDoc, serverTimestamp } from "firebase/firestore"
 
 type prop = {
-  setNewComment: React.Dispatch<React.SetStateAction<number>>
   userData: {username: string; img: string;}
 }
-const Comment = ({setNewComment, userData}:prop) => {
+const Comment = ({userData}:prop) => {
   const [comment, setComment] = useState("");
 
   const sendPost = (e: { preventDefault: () => void }) => {
@@ -17,11 +16,10 @@ const Comment = ({setNewComment, userData}:prop) => {
       img: userData.img,
       score: 1,
       username: userData.username,
-      id: "3",
+      id: Math.random()*10,
       replies: [],
       timestamp: serverTimestamp()
     })
-    setNewComment(Math.random()*10)
     setComment("");
     
   }

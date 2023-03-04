@@ -1,4 +1,5 @@
 import "./Reply.scss"
+import { Timestamp } from "firebase/firestore"
 import { ReactComponent as PlusIcon } from "../assets/icon-plus.svg"
 import { ReactComponent as MinusIcon } from "../assets/icon-minus.svg"
 import { ReactComponent as ReplyIcon } from "../assets/icon-reply.svg"
@@ -12,7 +13,7 @@ import {IDeleteReply} from "../App"
 
 type Props = {
   replyProps: {content: string, score: number, timestamp:any,
-     img:string, username:string, replyingTo:string, id:number}
+     img:string, username:string, replyingTo:string, id:number, convertedTime:string | undefined}
   setReplyComment: React.Dispatch<React.SetStateAction<boolean>>
   postId: string
   setDeleteReply: React.Dispatch<React.SetStateAction<IDeleteReply>>
@@ -28,10 +29,6 @@ const Reply = ({loggedIn, userData, replyProps, setReplyComment, postId, setDele
   const [comment, setComment] = useState(replyProps.content);
   const [scoreState, setScoreState] = useState(replyProps.score)
 
-  let timeAgo:String= "";
-  if (replyProps.timestamp != undefined) {
-    timeAgo=dayjs(new Date(replyProps.timestamp.toDate())).fromNow()
-  }
   const updateReply = (e: { preventDefault: () => void }) => {
     e.preventDefault();
     const docRef=doc(db,"post",postId)
@@ -43,7 +40,7 @@ const Reply = ({loggedIn, userData, replyProps, setReplyComment, postId, setDele
         score: replyProps.score,
         username: replyProps.username,
         replyingTo: replyProps.replyingTo,
-        timestamp: replyProps.timestamp
+        timestamp: Timestamp.fromMillis(replyProps.timestamp)
       })
     })
 
@@ -55,7 +52,7 @@ const Reply = ({loggedIn, userData, replyProps, setReplyComment, postId, setDele
         score: replyProps.score,
         username: replyProps.username,
         replyingTo: replyProps.replyingTo,
-        timestamp: replyProps.timestamp
+        timestamp: Timestamp.fromMillis(replyProps.timestamp)
       })
     })
     setRenderUpdateReply(comment)
@@ -80,7 +77,7 @@ const Reply = ({loggedIn, userData, replyProps, setReplyComment, postId, setDele
         score: replyProps.score,
         username: replyProps.username,
         replyingTo: replyProps.replyingTo,
-        timestamp: replyProps.timestamp
+        timestamp: Timestamp.fromMillis(replyProps.timestamp)
       }
     })
   }
@@ -98,7 +95,7 @@ const Reply = ({loggedIn, userData, replyProps, setReplyComment, postId, setDele
               <img src={replyProps.img} alt="avatar" />
               <div className="username">{replyProps.username}</div>
               {replyProps.username === userData.username ? <div className="you">you</div> : ""}
-              <div className="time">{timeAgo}</div>
+              <div className="time">{replyProps.convertedTime}</div>
             </div>
             {loggedIn === false ? "" : replyProps.username != userData.username ?
             <div onClick={() => {setReplyComment(true);setReplyingToState(replyProps.username)}} className="reply__container">

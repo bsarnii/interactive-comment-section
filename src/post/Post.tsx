@@ -9,8 +9,6 @@ import ReplyComment from "../replyComment/ReplyComment"
 import { useState } from "react"
 import {db} from "../firebase"
 import { doc, updateDoc } from "firebase/firestore"
-import dayjs from "dayjs";
-import relativeTime from "dayjs/plugin/relativeTime";
 import {IDeleteReply} from "../App"
 
 
@@ -21,7 +19,6 @@ type Props = {
   img: string,
   username: string
   replies: object[]
-  setNewReplyComment: React.Dispatch<React.SetStateAction<number>>
   setDeleteComment: React.Dispatch<React.SetStateAction<string>>
   setDeleteReply: React.Dispatch<React.SetStateAction<IDeleteReply>>
   setShowPopup: React.Dispatch<React.SetStateAction<boolean>>
@@ -31,19 +28,16 @@ type Props = {
   timestamp: any
   userData: {username: string; img: string;}
   loggedIn: boolean
+  convertedTime: string | undefined
 }
 
-const Post = ({loggedIn, userData, count,timestamp, id, content, username, img, replies, setNewReplyComment, setDeleteComment, setDeleteReply, setShowPopup, setShowReplyPopup, setRenderUpdatePost, setRenderUpdateReply}:Props) => {
+const Post = ({loggedIn, userData, count,timestamp, convertedTime, id, content, username, img, replies, setDeleteComment, setDeleteReply, setShowPopup, setShowReplyPopup, setRenderUpdatePost, setRenderUpdateReply}:Props) => {
  const [replyComment, setReplyComment] = useState(false)
  const [editCommentState, setEditCommentState] = useState(false)
  const [comment, setComment] = useState(content)
  const [replyingToState, setReplyingToState] = useState("");
  const [scoreState, setScoreState] = useState(count)
- dayjs.extend(relativeTime)
- let timeAgo:String= "";
-if (timestamp != undefined) {
-  timeAgo=dayjs(new Date(timestamp.toDate())).fromNow()
-}
+
 
  const updatePost = (e: { preventDefault: () => void }) => {
   e.preventDefault();
@@ -88,7 +82,7 @@ if (timestamp != undefined) {
               <img src={img} alt="" />
               <div className="username">{username}</div>
               {username === userData.username ? <div className="you">you</div> : ""}
-              <div className="time">{timeAgo}</div>
+              <div className="time">{convertedTime}</div>
             </div>
             {loggedIn === false ? "" : username != userData.username ?
             <div onClick={() => {setReplyComment(true);setReplyingToState(username)}} className="reply__container">
@@ -114,7 +108,7 @@ if (timestamp != undefined) {
     </article>
     <div className="replies">
      {renderReply}
-     {replyComment === true ? <ReplyComment loggedIn={loggedIn} userData={userData} id={id} replyingToState={replyingToState} setNewReplyComment={setNewReplyComment} setReplyComment={setReplyComment}/> : ""}
+     {replyComment === true ? <ReplyComment loggedIn={loggedIn} userData={userData} id={id} replyingToState={replyingToState} setReplyComment={setReplyComment}/> : ""}
     </div>
     </>
   )

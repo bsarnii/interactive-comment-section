@@ -6,13 +6,12 @@ import { doc, updateDoc, arrayUnion } from "firebase/firestore"
 
 type Props = {
   id:string,
-  setNewReplyComment: React.Dispatch<React.SetStateAction<number>>,
   setReplyComment: React.Dispatch<React.SetStateAction<boolean>>,
   replyingToState: string
   userData: {username: string; img: string;}
   loggedIn: boolean
 }
-const ReplyComment = ({userData, loggedIn, id, setNewReplyComment, setReplyComment, replyingToState}:Props) => {
+const ReplyComment = ({userData, loggedIn, id, setReplyComment, replyingToState}:Props) => {
   const [comment, setComment] = useState("");
   const addReply = (e: { preventDefault: () => void }) => {
         e.preventDefault();
@@ -29,7 +28,6 @@ const ReplyComment = ({userData, loggedIn, id, setNewReplyComment, setReplyComme
             timestamp: new Date()
           })
         })
-        setNewReplyComment(replyId)
         setReplyComment(false)
         setComment("");
         
@@ -53,6 +51,3 @@ const ReplyComment = ({userData, loggedIn, id, setNewReplyComment, setReplyComme
 
 export default ReplyComment
 
-function now(): any {
-  throw new Error("Function not implemented.")
-}
