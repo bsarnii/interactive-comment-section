@@ -1,5 +1,4 @@
 import "./Reply.scss"
-import { Timestamp } from "firebase/firestore"
 import { ReactComponent as PlusIcon } from "../assets/icon-plus.svg"
 import { ReactComponent as MinusIcon } from "../assets/icon-minus.svg"
 import { ReactComponent as ReplyIcon } from "../assets/icon-reply.svg"
@@ -9,6 +8,7 @@ import { useState } from "react"
 import {db} from "../firebase"
 import { doc, updateDoc, arrayRemove, arrayUnion} from "firebase/firestore"
 import { deleteReplyInterface } from "../types/deleteReply.interface"
+
 
 type Props = {
   replyProps: {content: string, score: number, timestamp:any,
@@ -38,7 +38,7 @@ const Reply = ({loggedIn, userData, replyProps, setReplyComment, postId, setDele
         score: replyProps.score,
         username: replyProps.username,
         replyingTo: replyProps.replyingTo,
-        timestamp: Timestamp.fromMillis(replyProps.timestamp)
+        timestamp: new Date(replyProps.timestamp)
       })
     })
 
@@ -50,7 +50,7 @@ const Reply = ({loggedIn, userData, replyProps, setReplyComment, postId, setDele
         score: replyProps.score,
         username: replyProps.username,
         replyingTo: replyProps.replyingTo,
-        timestamp: Timestamp.fromMillis(replyProps.timestamp)
+        timestamp: new Date(replyProps.timestamp)
       })
     })
     setEditCommentState(false)
@@ -86,7 +86,7 @@ const Reply = ({loggedIn, userData, replyProps, setReplyComment, postId, setDele
         score: replyProps.score,
         username: replyProps.username,
         replyingTo: replyProps.replyingTo,
-        timestamp: Timestamp.fromMillis(replyProps.timestamp)
+        timestamp: new Date(replyProps.timestamp)
       }
     })
   }

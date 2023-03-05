@@ -9,6 +9,6 @@ export interface deleteReplyInterface {
         score:number
         username:string
         replyingTo:string
-        timestamp:number | Timestamp
+        timestamp:number | Date
     }
 }

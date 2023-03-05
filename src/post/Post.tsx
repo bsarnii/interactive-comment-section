@@ -10,6 +10,7 @@ import { useState } from "react"
 import {db} from "../firebase"
 import { doc, updateDoc } from "firebase/firestore"
 import { deleteReplyInterface } from "../types/deleteReply.interface"
+import { Replies } from "../types/post.interface"
 
 
 type Props = {
@@ -18,7 +19,7 @@ type Props = {
   content: string,
   img: string,
   username: string
-  replies: object[]
+  replies: Replies[]
   convertedTime: string | undefined
   setDeleteComment: React.Dispatch<React.SetStateAction<string>>
   setDeleteReply: React.Dispatch<React.SetStateAction<deleteReplyInterface>>
@@ -51,15 +52,6 @@ const Post = ({loggedIn, userData, count, convertedTime, id, content, username, 
  }
  const addScore = () => {
   setScoreState(scoreState + 1);
-  const docRef= doc(db, "post", id);
-  updateDoc((docRef),{
-      content: comment,
-      img: img,
-      score: scoreState,
-      username: username,
-      id: id,
-      replies: replies
-  })
  }
 
  const subtractScore = () => {
@@ -67,15 +59,6 @@ const Post = ({loggedIn, userData, count, convertedTime, id, content, username, 
     return
   }
   setScoreState(scoreState - 1);
-  const docRef= doc(db, "post", id);
-  updateDoc((docRef),{
-      content: comment,
-      img: img,
-      score: scoreState,
-      username: username,
-      id: id,
-      replies: replies
-  })
  }
 
  const editComment =
