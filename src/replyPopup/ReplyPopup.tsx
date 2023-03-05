@@ -1,11 +1,11 @@
 import "./ReplyPopup.scss";
 import {db} from "../firebase"
 import { doc, updateDoc, arrayRemove } from "firebase/firestore"
-import {IDeleteReply} from "../App"
+import { deleteReplyInterface } from "../types/deleteReply.interface";
 
 type props = {
   setShowReplyPopup:React.Dispatch<React.SetStateAction<boolean>>
-  deleteReply: IDeleteReply
+  deleteReply: deleteReplyInterface
 }
 const ReplyPopup = ({setShowReplyPopup,deleteReply}:props) => {
 
