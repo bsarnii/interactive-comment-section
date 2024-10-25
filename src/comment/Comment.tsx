@@ -6,7 +6,7 @@ import { addDoc, serverTimestamp } from "firebase/firestore"
 type prop = {
   userData: {username: string; img: string;}
 }
-const Comment = ({userData}:prop) => {
+const Comment = ({userData, setLoggedIn, setUserData}:any) => {
   const [comment, setComment] = useState("");
 
   const sendPost = (e: { preventDefault: () => void }) => {
@@ -21,20 +21,29 @@ const Comment = ({userData}:prop) => {
       timestamp: serverTimestamp()
     })
     setComment("");
-    
+  }
+
+  const onLogoutClick = (e:{preventDefault:() => void}) => {
+    e.preventDefault();
+    setLoggedIn(false);
+    setUserData({username:" ",img:" "})
   }
   
   return (
     <section className="comment">
       <form>
-        <img src={userData.img} alt="avatar"/>
+        <div className="avatar-logout-wrapper">
+          <img src={userData.img} alt="avatar"/>
+          <button onClick={onLogoutClick} className="logout-btn">Logout</button>
+        </div>
+        
         <textarea
         placeholder="Add a comment..."
         value={comment}
         onChange={(e)=> setComment(e.target.value)}
         >
         </textarea>
-        <button type="submit" onClick={sendPost}>SEND</button>
+        <button className="submit-btn" type="submit" onClick={sendPost}>SEND</button>
       </form>
     </section>
   )

@@ -12,10 +12,28 @@
         justify-content: center;
         align-items: flex-start;
         gap: 1rem;
-        img{
-            height: 2.5rem;
-            width: 2.5rem;
-            border-radius: 50%;
+        .avatar-logout-wrapper{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            img{
+                height: 2.5rem;
+                width: 2.5rem;
+                border-radius: 50%;
+            }
+            .logout-btn{
+                color: $primary-red;
+                font-weight: 500;
+                font-family: 'Rubik', sans-serif;
+                font-size: 16px;
+                background-color: transparent;
+                border: none;
+                cursor: pointer;
+                &:hover{
+                    opacity: 0.7;
+                }
+            }
         }
         textarea{
             width:100%;
@@ -32,7 +50,7 @@
                 outline: $primary-blue solid 1px;
             }
         }
-        button{
+        .submit-btn{
             padding: 0.8rem 1.6rem;
             background-color: $primary-blue;
             border-radius: 0.5rem;
@@ -54,7 +72,7 @@
         form{
             flex-direction: column-reverse;
             position: relative;
-            button{
+            .submit-btn{
                 position:absolute;
                 bottom: 0;
                 right: 0;

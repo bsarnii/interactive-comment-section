@@ -86,7 +86,7 @@ const Post = ({loggedIn, userData, count, convertedTime, id, content, username, 
         <div className="post__right">
           <div className="post__right__top">
             <div className="avatar__username__time">
-              <img src={img} alt="" />
+              <img src={img} alt={`Profile picture from ${username}`} />
               <div className="username">{username}</div>
               {username === userData.username ? <div className="you">you</div> : ""}
               <div className="time">{convertedTime}</div>

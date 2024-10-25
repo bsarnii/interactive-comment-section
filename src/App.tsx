@@ -46,8 +46,9 @@ function App() {
   return (
     <>
     <main className='container'>
-      {loggedIn===true ? "" : <Login setLoggedIn={setLoggedIn} setUserData={setUserData} />}
-      {loggedIn === false ? "" : <Comment userData={userData} />}
+      {loggedIn===true 
+      ? <Comment userData={userData} setLoggedIn={setLoggedIn} setUserData={setUserData} /> 
+      : <Login setLoggedIn={setLoggedIn} setUserData={setUserData} />}
       <section className='posts'>
         {fetchedPosts.length > 1 ? 
         <>

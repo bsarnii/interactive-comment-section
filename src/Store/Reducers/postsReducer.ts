@@ -78,7 +78,7 @@ export const fetchPosts = createAsyncThunk('posts/fetchPosts', async(_,{dispatch
           }
          })
          dispatch(setPosts(posts))
-
+         dispatch(setLoading(false))
      })
   } catch (error) {
     dispatch(setError(error as string))
