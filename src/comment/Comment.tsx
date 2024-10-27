@@ -3,10 +3,11 @@ import { useState } from "react"
 import { colRef } from "../firebase"
 import { addDoc, serverTimestamp } from "firebase/firestore"
 
-type prop = {
+type props = {
   userData: {username: string; img: string;}
+  logout: () => void
 }
-const Comment = ({userData, setLoggedIn, setUserData}:any) => {
+const Comment = ({userData, logout}:props) => {
   const [comment, setComment] = useState("");
 
   const sendPost = (e: { preventDefault: () => void }) => {
@@ -22,19 +23,13 @@ const Comment = ({userData, setLoggedIn, setUserData}:any) => {
     })
     setComment("");
   }
-
-  const onLogoutClick = (e:{preventDefault:() => void}) => {
-    e.preventDefault();
-    setLoggedIn(false);
-    setUserData({username:" ",img:" "})
-  }
   
   return (
     <section className="comment">
       <form>
         <div className="avatar-logout-wrapper">
           <img src={userData.img} alt="avatar"/>
-          <button onClick={onLogoutClick} className="logout-btn">Logout</button>
+          <button onClick={logout} className="logout-btn">Logout</button>
         </div>
         
         <textarea

@@ -31,6 +31,16 @@ function App() {
       return () => clearTimeout(timer);
   },[dispatch,showPopup,showReplyPopup, loggedIn])
 
+  const login = (username:string, img:string) => {
+    setUserData({username,img});
+    setLoggedIn(true);
+
+  }
+  const logout = () => {
+    setUserData({username:'', img:''});
+    setLoggedIn(false)
+  }
+
 
   const posts = fetchedPosts.map( post => {
     return <Post
@@ -47,8 +57,8 @@ function App() {
     <>
     <main className='container'>
       {loggedIn===true 
-      ? <Comment userData={userData} setLoggedIn={setLoggedIn} setUserData={setUserData} /> 
-      : <Login setLoggedIn={setLoggedIn} setUserData={setUserData} />}
+      ? <Comment logout={logout} userData={userData} /> 
+      : <Login login={login}/>}
       <section className='posts'>
         {fetchedPosts.length > 1 ? 
         <>

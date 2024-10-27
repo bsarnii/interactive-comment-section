@@ -3,17 +3,19 @@ import GoogleButton from "react-google-button"
 import { auth } from "../firebase";
 import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 
-const Login = ({setLoggedIn,setUserData}:any) => {
+type props = {
+  login: (username:string,url:string) => void
+}
+
+const Login = ({login}:props) => {
 
   const handleGoogleSignIn = () => {
     const provider = new GoogleAuthProvider();
     signInWithPopup(auth,provider)
     .then((re)=>{
-      setLoggedIn(true)
-      setUserData({username:re.user.displayName,img:re.user.photoURL})
+      login(re.user.displayName || '',re.user.photoURL || '')
     })
     .catch((err)=>{
-      setLoggedIn(false)
       console.log(err)
     })
   }
