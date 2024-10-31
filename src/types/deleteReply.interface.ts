@@ -1,4 +1,3 @@
-import { Timestamp } from "firebase/firestore"
 
 export interface deleteReplyInterface {
     postId: string

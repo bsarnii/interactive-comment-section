@@ -6,16 +6,19 @@ import Login from './login/Login'
 import { useEffect, useState } from 'react'
 import PostPopup from "./postPopup/PostPopup"
 import ReplyPopup from './replyPopup/ReplyPopup'
-import { useSelector, useDispatch } from "react-redux";
-import { RootState, AppDispatch } from './Store/store'
+import { useSelector, useDispatch, Provider } from "react-redux";
+import { RootState, AppDispatch, store, persistor } from './Store/store';
+import { PersistGate } from 'redux-persist/integration/react';
 import { fetchPosts } from './Store/Reducers/postsReducer'
 import { deleteReplyInterface } from './types/deleteReply.interface'
+import { selectIsLoggedIn, selectUser, setUser } from './Store/Reducers/userReducer'
 
 
 function App() {
-  const {fetchedPosts} = useSelector(
-    (state: RootState) => state.posts
-  )
+  const {fetchedPosts} = useSelector((state: RootState) => state.posts);
+  const userData = useSelector((state: RootState) => selectUser(state));
+  const loggedIn = useSelector((state: RootState) => selectIsLoggedIn(state));
+
   const dispatch = useDispatch<AppDispatch>();
 
         //Getting props from child//
@@ -23,8 +26,6 @@ function App() {
   const [deleteReply, setDeleteReply] = useState<deleteReplyInterface>({postId: "", replies: {content:"",id:0,img:"",score:0,username:"",replyingTo:"",timestamp:0}});
   const [showPopup, setShowPopup] = useState(false);
   const [showReplyPopup, setShowReplyPopup] = useState(false);
-  const [loggedIn, setLoggedIn] = useState(false);
-  const [userData, setUserData] = useState({username:" ",img:" "})
   
   useEffect(()=>{
     const timer =setTimeout(()=> dispatch(fetchPosts()), 300 )
@@ -32,13 +33,10 @@ function App() {
   },[dispatch,showPopup,showReplyPopup, loggedIn])
 
   const login = (username:string, img:string) => {
-    setUserData({username,img});
-    setLoggedIn(true);
-
+    dispatch(setUser({ username, img }));
   }
   const logout = () => {
-    setUserData({username:'', img:''});
-    setLoggedIn(false)
+    dispatch(setUser({ username: '', img:'' }));
   }
 
 
@@ -54,30 +52,32 @@ function App() {
      />
   })
   return (
-    <>
-    <main className='container'>
-      {loggedIn===true 
-      ? <Comment logout={logout} userData={userData} /> 
-      : <Login login={login}/>}
-      <section className='posts'>
-        {fetchedPosts.length > 1 ? 
-        <>
-          {posts}
-        </> 
-        :
-        <>
-        <PostSkeleton />
-        <PostSkeleton />
-        <PostSkeleton />
-        <PostSkeleton />
-        <PostSkeleton />
-        </>
-        }
-      </section>
-    </main>
-    {showPopup ? <PostPopup setShowPopup={setShowPopup} deleteComment={deleteComment}/> : ""}
-    {showReplyPopup ? <ReplyPopup setShowReplyPopup={setShowReplyPopup} deleteReply={deleteReply}/> : ""}
-    </>
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <main className='container'>
+          {loggedIn===true 
+          ? <Comment logout={logout} userData={userData} /> 
+          : <Login login={login}/>}
+          <section className='posts'>
+            {fetchedPosts.length > 1 ? 
+            <>
+              {posts}
+            </> 
+            :
+            <>
+            <PostSkeleton />
+            <PostSkeleton />
+            <PostSkeleton />
+            <PostSkeleton />
+            <PostSkeleton />
+            </>
+            }
+          </section>
+        </main>
+        {showPopup ? <PostPopup setShowPopup={setShowPopup} deleteComment={deleteComment}/> : ""}
+        {showReplyPopup ? <ReplyPopup setShowReplyPopup={setShowReplyPopup} deleteReply={deleteReply}/> : ""}
+      </PersistGate>
+    </Provider>
   )
 }
 
